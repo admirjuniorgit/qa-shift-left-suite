@@ -17,6 +17,10 @@ import type { TestStep } from "@/types/database";
 
 const initialState: ActionResult = {};
 
+const TYPE_ITEMS = { manual: "Manual", automated: "Automatizado" };
+const PRIORITY_ITEMS = { low: "Baixa", medium: "Média", high: "Alta", critical: "Crítica" };
+const STATUS_ITEMS = { active: "Ativo", draft: "Rascunho", deprecated: "Descontinuado" };
+
 interface TestCaseFormProps {
   action: (prev: ActionResult, formData: FormData) => Promise<ActionResult>;
   components: { id: string; name: string }[];
@@ -45,6 +49,7 @@ export function TestCaseForm({
 }: TestCaseFormProps) {
   const [state, formAction, pending] = useActionState(action, initialState);
   const stepsText = defaultValues?.steps?.map((s) => s.action).join("\n") ?? "";
+  const componentItems = Object.fromEntries(components.map((c) => [c.id, c.name]));
 
   return (
     <form action={formAction} className="max-w-2xl space-y-5">
@@ -56,7 +61,11 @@ export function TestCaseForm({
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="componentId">Componente</Label>
-          <Select name="componentId" defaultValue={defaultValues?.componentId ?? undefined}>
+          <Select
+            name="componentId"
+            items={componentItems}
+            defaultValue={defaultValues?.componentId ?? undefined}
+          >
             <SelectTrigger id="componentId">
               <SelectValue placeholder="Nenhum" />
             </SelectTrigger>
@@ -72,7 +81,7 @@ export function TestCaseForm({
 
         <div className="space-y-2">
           <Label htmlFor="type">Tipo</Label>
-          <Select name="type" defaultValue={defaultValues?.type ?? "manual"}>
+          <Select name="type" items={TYPE_ITEMS} defaultValue={defaultValues?.type ?? "manual"}>
             <SelectTrigger id="type">
               <SelectValue />
             </SelectTrigger>
@@ -85,7 +94,11 @@ export function TestCaseForm({
 
         <div className="space-y-2">
           <Label htmlFor="priority">Prioridade</Label>
-          <Select name="priority" defaultValue={defaultValues?.priority ?? "medium"}>
+          <Select
+            name="priority"
+            items={PRIORITY_ITEMS}
+            defaultValue={defaultValues?.priority ?? "medium"}
+          >
             <SelectTrigger id="priority">
               <SelectValue />
             </SelectTrigger>
@@ -101,7 +114,7 @@ export function TestCaseForm({
         {showStatus && (
           <div className="space-y-2">
             <Label htmlFor="status">Status</Label>
-            <Select name="status" defaultValue={defaultValues?.status ?? "active"}>
+            <Select name="status" items={STATUS_ITEMS} defaultValue={defaultValues?.status ?? "active"}>
               <SelectTrigger id="status">
                 <SelectValue />
               </SelectTrigger>

@@ -1,5 +1,6 @@
 "use server";
 
+import { randomUUID } from "crypto";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { slugify, projectKeyFromName } from "@/lib/slug";
@@ -37,41 +38,40 @@ export async function completeOnboarding(
     slug = `${baseSlug}-${Math.random().toString(36).slice(2, 6)}`;
   }
 
-  const { data: org, error: orgError } = await supabase
+  // Gera o id no client em vez de pedir o registro de volta (`.select()`):
+  // a política de leitura de `organizations` exige ser membro, e o membro só
+  // é criado no passo seguinte — pedir o RETURNING aqui faria o insert falhar
+  // por RLS mesmo tendo sido bem-sucedido.
+  const orgId = randomUUID();
+  const { error: orgError } = await supabase
     .from("organizations")
-    .insert({ name: orgName, slug, created_by: user.id })
-    .select("id, slug")
-    .single();
+    .insert({ id: orgId, name: orgName, slug, created_by: user.id });
 
-  if (orgError || !org) {
-    return { error: orgError?.message ?? "Não foi possível criar a organização." };
+  if (orgError) {
+    return { error: orgError.message };
   }
 
   const { error: memberError } = await supabase
     .from("organization_members")
-    .insert({ organization_id: org.id, user_id: user.id, role: "owner" });
+    .insert({ organization_id: orgId, user_id: user.id, role: "owner" });
 
   if (memberError) {
     return { error: memberError.message };
   }
 
   const projectKey = projectKeyFromName(projectName);
-  const { data: project, error: projectError } = await supabase
-    .from("projects")
-    .insert({
-      organization_id: org.id,
-      name: projectName,
-      key: projectKey,
-      created_by: user.id,
-    })
-    .select("key")
-    .single();
+  const { error: projectError } = await supabase.from("projects").insert({
+    organization_id: orgId,
+    name: projectName,
+    key: projectKey,
+    created_by: user.id,
+  });
 
-  if (projectError || !project) {
-    return { error: projectError?.message ?? "Não foi possível criar o projeto." };
+  if (projectError) {
+    return { error: projectError.message };
   }
 
-  redirect(`/app/${org.slug}/${project.key}`);
+  redirect(`/app/${slug}/${projectKey}`);
 }
 
 export async function createProject(

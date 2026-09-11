@@ -34,6 +34,7 @@ export function DefectStatusSelect({
   return (
     <Select
       value={status}
+      items={STATUS_LABELS}
       disabled={pending}
       onValueChange={(value) =>
         startTransition(() => updateDefectStatus(defectId, revalidatePathTarget, value as DefectStatus))

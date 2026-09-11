@@ -64,7 +64,7 @@ export default async function TestCasesPage({
                 <TableCell className="text-muted-foreground">
                   {tc.components?.name ?? "—"}
                 </TableCell>
-                <TableCell className="capitalize">{tc.type}</TableCell>
+                <TableCell>{tc.type === "automated" ? "Automatizado" : "Manual"}</TableCell>
                 <TableCell>
                   <PriorityBadge value={tc.priority} />
                 </TableCell>
