@@ -1,5 +1,8 @@
 # QA Shift-Left Suite
 
+[![CI](https://github.com/admirjuniorgit/qa-shift-left-suite/actions/workflows/ci.yml/badge.svg)](https://github.com/admirjuniorgit/qa-shift-left-suite/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 Suíte de qualidade para times ágeis que trabalham com GitLab e Kanban: casos
 de teste, planos, execuções, defeitos e métricas em um só lugar — pensada
 para aplicar **shift-left** de verdade, com qualidade entrando desde o
