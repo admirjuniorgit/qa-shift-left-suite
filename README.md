@@ -13,6 +13,13 @@ Python, JavaScript ou qualquer outra stack.
 > Projeto pessoal, open source, construído como portfólio de engenharia de
 > qualidade.
 
+## Autor
+
+**Admir Junior** — Engenheiro de Testes de Software Pleno, com 9 anos de
+experiência em qualidade de software.
+
+[LinkedIn](https://www.linkedin.com/in/admirjunior/)
+
 ## Funcionalidades (MVP 1)
 
 - **Casos de teste**: repositório por componente, prioridade, tipo

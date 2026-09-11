@@ -107,8 +107,21 @@ export default function Home() {
       </main>
 
       <footer className="border-t py-8 text-center text-sm text-muted-foreground">
-        Projeto open source — construído como portfólio de engenharia de
-        qualidade.
+        <p>
+          Projeto open source — construído como portfólio de engenharia de
+          qualidade.
+        </p>
+        <p className="mt-1">
+          por Admir Junior, Engenheiro de Testes de Software Pleno ·{" "}
+          <a
+            href="https://www.linkedin.com/in/admirjunior/"
+            target="_blank"
+            rel="noreferrer"
+            className="underline underline-offset-2 hover:text-foreground"
+          >
+            LinkedIn
+          </a>
+        </p>
       </footer>
     </div>
   );
