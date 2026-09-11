@@ -35,8 +35,8 @@ teste em formatos padrão (JUnit XML, Playwright JSON). Qualquer pipeline de CI
   para frontend e backend (Server Components, Server Actions, Route Handlers).
 - **Supabase**: Postgres com Row Level Security multi-tenant, Auth
   (e-mail/senha) e Storage (bucket `evidences` para anexos de execução).
-- **Render**: hospedagem do serviço Next.js (Web Service). Supabase Cloud
-  hospeda banco/auth/storage.
+- **Netlify**: hospedagem do app Next.js (Next.js Runtime, deploy automático
+  a partir do GitHub). Supabase Cloud hospeda banco/auth/storage.
 - **Vitest** para testes unitários/integração (parsers, criptografia, slugs).
 - **Playwright** para testes end-to-end do próprio painel (dogfooding).
 

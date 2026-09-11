@@ -46,7 +46,7 @@ runner de automação E2E hospedado, notificações, etc.) e a
 ## Stack
 
 Next.js 16 (App Router, TypeScript, Tailwind v4, shadcn/ui) · Supabase
-(Postgres + Auth + Storage, com RLS) · Render (deploy) · Vitest · Playwright
+(Postgres + Auth + Storage, com RLS) · Netlify (deploy) · Vitest · Playwright
 · GitHub Actions.
 
 ## Rodando localmente
@@ -103,9 +103,11 @@ curl -X POST "https://sua-instancia.exemplo/api/projects/$PROJECT_ID/test-runs/i
 
 - **Supabase**: crie o projeto, rode as migrations (passo 2 acima), copie as
   chaves.
-- **Render**: crie um Web Service apontando para este repositório
-  (`npm install && npm run build` como build command, `npm run start` como
-  start command), configure as variáveis de ambiente de `.env.example`.
+- **Netlify**: Add new site → Import an existing project → conecte este
+  repositório. O Netlify detecta o Next.js automaticamente (Next.js Runtime)
+  e configura o build. Em Site settings → Environment variables, adicione as
+  mesmas chaves de `.env.example` (incluindo `NEXT_PUBLIC_APP_URL` apontando
+  para a URL final do site).
 
 ## Licença
 
