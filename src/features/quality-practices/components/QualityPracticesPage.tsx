@@ -1,0 +1,88 @@
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
+import { useToast } from "@/components/ui/toast-context";
+import { createId } from "@/lib/id";
+import { BUILT_IN_TEMPLATES } from "../templates-seed";
+import { loadTemplates, saveTemplates } from "../storage";
+import { templateToMarkdown } from "../markdown";
+import type { ChecklistTemplate } from "../types";
+import { TemplateList } from "./TemplateList";
+import { TemplateEditor } from "./TemplateEditor";
+import { MarkdownExportPreview } from "./MarkdownExportPreview";
+
+export function QualityPracticesPage() {
+  const [templates, setTemplates] = useState<ChecklistTemplate[]>([]);
+  const [selectedId, setSelectedId] = useState<string>("");
+  const notify = useToast();
+
+  useEffect(() => {
+    const loaded = loadTemplates();
+    setTemplates(loaded);
+    setSelectedId(loaded[0]?.id ?? "");
+  }, []);
+
+  function persist(next: ChecklistTemplate[]) {
+    setTemplates(next);
+    saveTemplates(next);
+  }
+
+  const selected = templates.find((t) => t.id === selectedId);
+
+  function handleChange(updated: ChecklistTemplate) {
+    persist(templates.map((t) => (t.id === updated.id ? updated : t)));
+  }
+
+  function handleResetToBuiltIn() {
+    if (!selected) return;
+    const original = BUILT_IN_TEMPLATES.find((t) => t.id === selected.id);
+    if (!original) return;
+    persist(templates.map((t) => (t.id === selected.id ? original : t)));
+    notify("Template restaurado para o original.");
+  }
+
+  function handleCreateCustom() {
+    const template: ChecklistTemplate = { id: createId(), name: "Novo checklist", category: "custom", isBuiltIn: false, items: [] };
+    persist([...templates, template]);
+    setSelectedId(template.id);
+  }
+
+  function handleDeleteCustom(id: string) {
+    persist(templates.filter((t) => t.id !== id));
+    if (selectedId === id) setSelectedId(templates[0]?.id ?? "");
+  }
+
+  return (
+    <div className="grid gap-6 md:grid-cols-[1fr_2fr]">
+      <div>
+        <div className="mb-2 flex items-center justify-between">
+          <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-200">Templates</h3>
+          <Button variant="ghost" size="sm" onClick={handleCreateCustom}>
+            + novo
+          </Button>
+        </div>
+        <TemplateList templates={templates} selectedId={selectedId} onSelect={setSelectedId} />
+      </div>
+
+      <Card className="space-y-4">
+        {selected ? (
+          <>
+            <TemplateEditor
+              template={selected}
+              onChange={handleChange}
+              onResetToBuiltIn={selected.isBuiltIn ? handleResetToBuiltIn : undefined}
+            />
+            {!selected.isBuiltIn && (
+              <Button variant="ghost" size="sm" onClick={() => handleDeleteCustom(selected.id)}>
+                Excluir este checklist
+              </Button>
+            )}
+            <MarkdownExportPreview markdown={templateToMarkdown(selected)} />
+          </>
+        ) : (
+          <p className="text-sm text-slate-400">Selecione ou crie um checklist.</p>
+        )}
+      </Card>
+    </div>
+  );
+}

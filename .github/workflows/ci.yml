@@ -6,13 +6,6 @@ on:
   pull_request:
     branches: [main]
 
-env:
-  NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
-  NEXT_PUBLIC_SUPABASE_ANON_KEY: placeholder-anon-key
-  SUPABASE_SERVICE_ROLE_KEY: placeholder-service-role-key
-  GITLAB_TOKEN_ENCRYPTION_KEY: ci-only-not-secret
-  NEXT_PUBLIC_APP_URL: http://localhost:3000
-
 jobs:
   quality:
     name: Lint, types, unit tests, build

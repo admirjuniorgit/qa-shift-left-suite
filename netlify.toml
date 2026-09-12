@@ -1,0 +1,19 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  # Vite 8 e o plugin React exigem Node >=20.19 ou >=22.12 — o site ainda
+  # pode estar configurado para uma versão mais antiga do tempo do Next.js.
+  NODE_VERSION = "22"
+  # O Netlify detecta Next.js automaticamente e injeta o @netlify/plugin-nextjs
+  # mesmo sem ele aparecer como plugin instalado no painel (provavelmente por
+  # causa do histórico do repositório, que já foi um app Next.js). Essa
+  # variável desliga esse plugin explicitamente — o build agora é um site
+  # estático puro do Vite, publicado em "dist/".
+  NETLIFY_NEXT_PLUGIN_SKIP = "true"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
