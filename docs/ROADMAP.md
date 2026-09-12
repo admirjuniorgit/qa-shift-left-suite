@@ -1,52 +1,50 @@
 # Roadmap
 
-## MVP 1 — Núcleo de qualidade (entregue)
+## MVP1 — Suíte de test management multi-tenant (substituído)
 
-- [x] Multi-tenant (organizações, projetos, papéis)
-- [x] Repositório de casos de teste (manual/automatizado, componente,
-      prioridade, tags, vínculo com issue do GitLab)
-- [x] Planos de teste (agrupamento de casos por ciclo/sprint)
-- [x] Execuções manuais (marcar passou/falhou/bloqueado/pulado/flaky, notas,
-      evidências)
-- [x] Defeitos, com criação de issue no GitLab a partir de um resultado
-- [x] Import de relatórios JUnit XML / Playwright JSON via API com token por
-      projeto (agnóstico de stack)
-- [x] Dashboard de métricas: cobertura por componente, tendência de pass
-      rate, MTTR de defeitos, testes mais flaky
-- [x] Testes automatizados do próprio projeto (Vitest + Playwright) e CI
+Versão anterior: Next.js + Supabase, multi-tenant, com casos de teste,
+planos, execuções, defeitos com integração GitLab, import de relatórios
+JUnit/Playwright e dashboard de métricas. Completo, testado e2e e com CI
+verde, mas descontinuado em favor da ferramenta estática atual — ver
+[ARCHITECTURE.md](ARCHITECTURE.md#por-que-não-há-mais-nextjssupabase). O
+código continua disponível no histórico do git.
 
-## MVP 2 — Refinamento & shift-left no board
+## v1 — Ferramenta estática de uso diário (entregue)
 
-- [ ] Importar issues/itens do board do GitLab (com filtros por label/milestone)
-- [ ] Checklist de Definition of Ready por item, com histórico de quem
-      preencheu
-- [ ] Geração assistida de casos de teste a partir de critérios de aceite
-- [ ] Estimativa colaborativa (planning poker simplificado) vinculada ao item
-      do GitLab
-- [ ] Comentários e menções nos itens, sincronizados com o GitLab
+- [x] Refinamento: banco de perguntas filtrável por características da
+      história, checklist de Definition of Ready, histórico de sessões
+- [x] Boas práticas: biblioteca de checklists (DoD, code review, relato de
+      bug, estratégia de teste, release), editáveis e exportáveis em
+      Markdown
+- [x] Construtor de testes sem código: montagem visual de passos, geração
+      de código Playwright (`.spec.ts`), cópia/download
+- [x] Persistência local (localStorage) com export/import de backup em JSON
+- [x] Testes unitários (Vitest) das funções puras de maior risco + e2e
+      (Playwright) por feature, CI no GitHub Actions, deploy estático no
+      Netlify
 
-## MVP 3 — Runner de automação E2E hospedado
+## v2 — Ideias futuras
 
-- [ ] Serviço separado (`apps/runner`, monorepo) rodando Playwright em
-      container no Render
-- [ ] Disparo via webhook do GitLab CI ou agendado
-- [ ] Trace viewer embutido, histórico de execuções por teste
-- [ ] Detecção de flaky test com re-execução automática e sinalização
-- [ ] Suporte a Puppeteer como motor alternativo por suíte
+- [ ] Construtor de testes: mais ações (hover, pressionar tecla, esperar
+      por seletor/estado, `expect` de contagem de elementos)
+- [ ] Banco de perguntas de refinamento maior/customizável pelo usuário
+      (adicionar categorias e tags próprias)
+- [ ] Mais templates de checklist prontos (ex: acessibilidade, segurança)
+- [ ] Exportar uma sessão de refinamento inteira como Markdown (perguntas
+      respondidas + notas + status do DoR), não só os checklists de
+      qualidade
+- [ ] Modo "trazer sua própria chave de IA" (client-side, sem proxy/backend)
+      para sugerir critérios de aceite ou casos de teste a partir de uma
+      descrição de história — opcional, sem armazenar a chave em lugar
+      nenhum além do navegador do próprio usuário
 
-## MVP 4 — Colaboração e insights avançados
+## Fora de escopo
 
-- [ ] Notificações (Slack/Teams) para defeitos críticos e quedas de pass rate
-- [ ] Relatórios executivos exportáveis (PDF/link compartilhável)
-- [ ] Sugestão de casos de teste por IA a partir de descrição de história
-- [ ] Papéis e permissões mais granulares por projeto (hoje herdados da
-      organização)
-- [ ] Convite de membros por e-mail com fluxo de aceite completo
-
-## Fora de escopo (por enquanto)
-
-- Execução de testes dentro da própria suíte para o código do time cliente —
-  a suíte orquestra e recebe resultados, mas não hospeda o código testado.
-- Suporte a ferramentas de gestão além do GitLab (Jira, Azure DevOps) — pode
-  entrar no roadmap se houver demanda real, mantendo a mesma filosofia de
-  integração via API sem acoplamento à stack do time.
+- Qualquer backend, banco de dados ou serviço hospedado — a premissa do
+  projeto é funcionar só como página estática.
+- Gravação real de cliques em sites de terceiros — inviável a partir de uma
+  página estática por restrição de segurança do navegador (cross-origin);
+  por isso o construtor de testes é um montador visual de passos, não um
+  gravador.
+- Multi-tenant, autenticação ou colaboração em tempo real — a ferramenta é
+  para uso pessoal de uma única pessoa.
