@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { cn } from "@/lib/cn";
 import { createId } from "@/lib/id";
+import { downloadTextFile } from "@/lib/download";
+import { useToast } from "@/components/ui/toast-context";
 import { generatePlaywrightTest } from "../codegen";
 import { loadTestCases, saveTestCases } from "../storage";
 import type { Step, TestCase } from "../types";
@@ -24,6 +26,7 @@ function slugify(name: string): string {
 export function TestBuilderPage() {
   const [testCases, setTestCases] = useState<TestCase[]>([]);
   const [selectedId, setSelectedId] = useState<string>("");
+  const notify = useToast();
 
   useEffect(() => {
     const loaded = loadTestCases();
@@ -51,6 +54,21 @@ export function TestBuilderPage() {
     setSelectedId(testCase.id);
   }
 
+  function handleDuplicateTestCase(id: string) {
+    const source = testCases.find((tc) => tc.id === id);
+    if (!source) return;
+    const now = new Date().toISOString();
+    const copy: TestCase = {
+      id: createId(),
+      name: `Cópia de ${source.name}`,
+      steps: source.steps.map((step) => ({ ...step, id: createId() })),
+      createdAt: now,
+      updatedAt: now,
+    };
+    persist([...testCases, copy]);
+    setSelectedId(copy.id);
+  }
+
   function handleDelete(id: string) {
     persist(testCases.filter((tc) => tc.id !== id));
     if (selectedId === id) setSelectedId(testCases[0]?.id ?? "");
@@ -64,6 +82,15 @@ export function TestBuilderPage() {
     updateSelected((tc) => ({ ...tc, steps: tc.steps.filter((_, i) => i !== index) }));
   }
 
+  function handleDuplicateStep(index: number) {
+    updateSelected((tc) => {
+      const steps = [...tc.steps];
+      const copy: Step = { ...steps[index], id: createId() };
+      steps.splice(index + 1, 0, copy);
+      return { ...tc, steps };
+    });
+  }
+
   function handleMoveStep(index: number, direction: -1 | 1) {
     updateSelected((tc) => {
       const steps = [...tc.steps];
@@ -72,6 +99,23 @@ export function TestBuilderPage() {
       [steps[index], steps[target]] = [steps[target], steps[index]];
       return { ...tc, steps };
     });
+  }
+
+  function handleReorderStep(fromIndex: number, toIndex: number) {
+    updateSelected((tc) => {
+      const steps = [...tc.steps];
+      const [moved] = steps.splice(fromIndex, 1);
+      steps.splice(toIndex, 0, moved);
+      return { ...tc, steps };
+    });
+  }
+
+  function handleDownloadAll() {
+    if (testCases.length === 0) return;
+    testCases.forEach((tc, i) => {
+      setTimeout(() => downloadTextFile(`${slugify(tc.name)}.spec.ts`, generatePlaywrightTest(tc), "text/typescript"), i * 150);
+    });
+    notify(`Baixando ${testCases.length} arquivo(s)...`);
   }
 
   return (
@@ -85,23 +129,36 @@ export function TestBuilderPage() {
         </div>
         <ul className="space-y-1">
           {testCases.map((tc) => (
-            <li key={tc.id}>
+            <li key={tc.id} className="group flex items-center gap-1">
               <button
                 onClick={() => setSelectedId(tc.id)}
                 className={cn(
-                  "w-full rounded-md px-3 py-2 text-left text-sm",
+                  "min-w-0 flex-1 rounded-md px-3 py-2 text-left text-sm",
                   tc.id === selectedId
                     ? "bg-indigo-50 font-medium text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300"
                     : "hover:bg-slate-100 dark:hover:bg-slate-800",
                 )}
               >
-                {tc.name}
+                <span className="block truncate">{tc.name}</span>
                 <span className="block text-xs text-slate-400">{tc.steps.length} passo(s)</span>
+              </button>
+              <button
+                onClick={() => handleDuplicateTestCase(tc.id)}
+                className="shrink-0 text-xs text-slate-400 opacity-0 hover:text-indigo-500 group-hover:opacity-100"
+                aria-label={`Duplicar ${tc.name}`}
+                title="Duplicar fluxo"
+              >
+                duplicar
               </button>
             </li>
           ))}
           {testCases.length === 0 && <p className="text-sm text-slate-400">Nenhum fluxo ainda.</p>}
         </ul>
+        {testCases.length > 1 && (
+          <Button variant="secondary" size="sm" className="mt-3 w-full" onClick={handleDownloadAll}>
+            Baixar todos (.spec.ts)
+          </Button>
+        )}
       </div>
 
       <Card className="space-y-4">
@@ -119,7 +176,13 @@ export function TestBuilderPage() {
               </Button>
             </div>
 
-            <StepList steps={selected.steps} onMove={handleMoveStep} onRemove={handleRemoveStep} />
+            <StepList
+              steps={selected.steps}
+              onMove={handleMoveStep}
+              onRemove={handleRemoveStep}
+              onDuplicate={handleDuplicateStep}
+              onReorder={handleReorderStep}
+            />
             <StepForm onAdd={handleAddStep} />
             <CodePreview code={generatePlaywrightTest(selected)} fileName={`${slugify(selected.name)}.spec.ts`} />
           </>

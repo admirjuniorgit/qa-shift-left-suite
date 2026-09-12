@@ -5,8 +5,10 @@ import { Card } from "@/components/ui/Card";
 import { inputClass, labelClass } from "@/components/ui/field-styles";
 import { useToast } from "@/components/ui/toast-context";
 import { BUILT_IN_QUESTIONS } from "../question-bank";
-import { loadSessions, saveSessions } from "../storage";
-import { DEFAULT_DOR_CHECKLIST_LABELS, type DoRChecklistItem, type RefinementSession, type StoryTag } from "../types";
+import { loadCustomQuestions, loadSessions, saveCustomQuestions, saveSessions } from "../storage";
+import { DEFAULT_DOR_CHECKLIST_LABELS, type DoRChecklistItem, type QuestionBankEntry, type RefinementSession, type StoryTag } from "../types";
+import { loadTemplates as loadQualityTemplates } from "@/features/quality-practices/storage";
+import type { ChecklistTemplate } from "@/features/quality-practices/types";
 import { QuestionBankFilter } from "./QuestionBankFilter";
 import { DoRChecklist } from "./DoRChecklist";
 import { SessionHistory } from "./SessionHistory";
@@ -21,15 +23,42 @@ function emptyDraft(): Omit<RefinementSession, "id" | "createdAt"> {
   };
 }
 
-export function RefinementPage() {
+export function RefinementPage({ onOpenQualityTemplate }: { onOpenQualityTemplate: (templateId: string) => void }) {
   const [sessions, setSessions] = useState<RefinementSession[]>([]);
+  const [customQuestions, setCustomQuestions] = useState<QuestionBankEntry[]>([]);
+  const [qualityTemplates, setQualityTemplates] = useState<ChecklistTemplate[]>([]);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [draft, setDraft] = useState(emptyDraft());
   const notify = useToast();
+  const allQuestions = [...BUILT_IN_QUESTIONS, ...customQuestions];
+  const suggestedTemplates = qualityTemplates.filter((t) => t.relatedTags?.some((tag) => draft.storyTags.includes(tag)));
 
   useEffect(() => {
     setSessions(loadSessions());
+    setCustomQuestions(loadCustomQuestions());
+    setQualityTemplates(loadQualityTemplates());
   }, []);
+
+  function handleAddCustomQuestion(question: Omit<QuestionBankEntry, "id">) {
+    const next = [...customQuestions, { ...question, id: createId() }];
+    setCustomQuestions(next);
+    saveCustomQuestions(next);
+    notify("Pergunta adicionada ao banco.");
+  }
+
+  function handleDuplicateSession(session: RefinementSession) {
+    const duplicate: RefinementSession = {
+      ...session,
+      id: createId(),
+      storyTitle: `Cópia de ${session.storyTitle || "(sem título)"}`,
+      createdAt: new Date().toISOString(),
+      dorChecklist: session.dorChecklist.map((item) => ({ ...item, id: createId(), checked: false })),
+    };
+    const next = [...sessions, duplicate];
+    setSessions(next);
+    saveSessions(next);
+    notify("Sessão duplicada.");
+  }
 
   function toggleTag(tag: StoryTag) {
     setDraft((d) => ({
@@ -131,12 +160,29 @@ export function RefinementPage() {
         </div>
 
         <QuestionBankFilter
-          questions={BUILT_IN_QUESTIONS}
+          questions={allQuestions}
           storyTags={draft.storyTags}
           onToggleTag={toggleTag}
           selectedQuestionIds={draft.selectedQuestionIds}
           onToggleQuestion={toggleQuestion}
+          onAddCustomQuestion={handleAddCustomQuestion}
         />
+
+        {suggestedTemplates.length > 0 && (
+          <div className="rounded-md border border-indigo-200 bg-indigo-50 p-3 text-sm dark:border-indigo-900 dark:bg-indigo-950">
+            <p className="mb-1 font-medium text-indigo-800 dark:text-indigo-300">Checklists de qualidade sugeridos</p>
+            <ul className="space-y-1">
+              {suggestedTemplates.map((t) => (
+                <li key={t.id} className="flex items-center justify-between gap-2">
+                  <span>{t.name}</span>
+                  <Button size="sm" variant="secondary" onClick={() => onOpenQualityTemplate(t.id)}>
+                    Abrir
+                  </Button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         <div>
           <label className={labelClass} htmlFor="refinement-notes">
@@ -159,7 +205,13 @@ export function RefinementPage() {
 
       <div>
         <h3 className="mb-2 text-sm font-semibold text-slate-800 dark:text-slate-200">Histórico</h3>
-        <SessionHistory sessions={sessions} onLoad={handleLoad} onDelete={handleDelete} />
+        <SessionHistory
+          sessions={sessions}
+          allQuestions={allQuestions}
+          onLoad={handleLoad}
+          onDelete={handleDelete}
+          onDuplicate={handleDuplicateSession}
+        />
       </div>
     </div>
   );

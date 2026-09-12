@@ -10,8 +10,9 @@ import type { ChecklistTemplate } from "../types";
 import { TemplateList } from "./TemplateList";
 import { TemplateEditor } from "./TemplateEditor";
 import { MarkdownExportPreview } from "./MarkdownExportPreview";
+import { ImportChecklistForm } from "./ImportChecklistForm";
 
-export function QualityPracticesPage() {
+export function QualityPracticesPage({ initialSelectedId }: { initialSelectedId?: string } = {}) {
   const [templates, setTemplates] = useState<ChecklistTemplate[]>([]);
   const [selectedId, setSelectedId] = useState<string>("");
   const notify = useToast();
@@ -19,7 +20,9 @@ export function QualityPracticesPage() {
   useEffect(() => {
     const loaded = loadTemplates();
     setTemplates(loaded);
-    setSelectedId(loaded[0]?.id ?? "");
+    const preferred = initialSelectedId && loaded.some((t) => t.id === initialSelectedId) ? initialSelectedId : loaded[0]?.id;
+    setSelectedId(preferred ?? "");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function persist(next: ChecklistTemplate[]) {
@@ -47,6 +50,19 @@ export function QualityPracticesPage() {
     setSelectedId(template.id);
   }
 
+  function handleImportChecklist(parsed: { name: string; items: string[] }) {
+    const template: ChecklistTemplate = {
+      id: createId(),
+      name: parsed.name,
+      category: "custom",
+      isBuiltIn: false,
+      items: parsed.items.map((text) => ({ id: createId(), text })),
+    };
+    persist([...templates, template]);
+    setSelectedId(template.id);
+    notify(`Checklist "${template.name}" importado com ${template.items.length} item(ns).`);
+  }
+
   function handleDeleteCustom(id: string) {
     persist(templates.filter((t) => t.id !== id));
     if (selectedId === id) setSelectedId(templates[0]?.id ?? "");
@@ -62,6 +78,9 @@ export function QualityPracticesPage() {
           </Button>
         </div>
         <TemplateList templates={templates} selectedId={selectedId} onSelect={setSelectedId} />
+        <div className="mt-3">
+          <ImportChecklistForm onImport={handleImportChecklist} />
+        </div>
       </div>
 
       <Card className="space-y-4">

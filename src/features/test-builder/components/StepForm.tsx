@@ -11,14 +11,35 @@ const STEP_KINDS: StepKind[] = [
   "fill",
   "selectOption",
   "check",
+  "hover",
+  "press",
+  "uploadFile",
+  "waitFor",
   "expectVisible",
   "expectText",
+  "expectCount",
+  "expectEnabled",
+  "expectDisabled",
   "expectUrl",
   "wait",
   "screenshot",
 ];
 
-const NEEDS_LOCATOR: StepKind[] = ["click", "fill", "selectOption", "check", "expectVisible", "expectText"];
+const NEEDS_LOCATOR: StepKind[] = [
+  "click",
+  "fill",
+  "selectOption",
+  "check",
+  "hover",
+  "press",
+  "uploadFile",
+  "waitFor",
+  "expectVisible",
+  "expectText",
+  "expectCount",
+  "expectEnabled",
+  "expectDisabled",
+];
 
 export function StepForm({ onAdd }: { onAdd: (step: Step) => void }) {
   const [kind, setKind] = useState<StepKind>("goto");
@@ -26,6 +47,9 @@ export function StepForm({ onAdd }: { onAdd: (step: Step) => void }) {
   const [value, setValue] = useState("");
   const [text, setText] = useState("");
   const [name, setName] = useState("");
+  const [key, setKey] = useState("Enter");
+  const [filePath, setFilePath] = useState("");
+  const [count, setCount] = useState(1);
   const [ms, setMs] = useState(1000);
   const [checked, setChecked] = useState(true);
   const [locator, setLocator] = useState<Locator>({ kind: "text", text: "" });
@@ -43,10 +67,24 @@ export function StepForm({ onAdd }: { onAdd: (step: Step) => void }) {
         return { id, kind, locator, value };
       case "check":
         return { id, kind, locator, checked };
+      case "hover":
+        return { id, kind, locator };
+      case "press":
+        return { id, kind, locator, key };
+      case "uploadFile":
+        return { id, kind, locator, filePath };
+      case "waitFor":
+        return { id, kind, locator };
       case "expectVisible":
         return { id, kind, locator };
       case "expectText":
         return { id, kind, locator, text };
+      case "expectCount":
+        return { id, kind, locator, count };
+      case "expectEnabled":
+        return { id, kind, locator };
+      case "expectDisabled":
+        return { id, kind, locator };
       case "expectUrl":
         return { id, kind, url };
       case "wait":
@@ -63,6 +101,7 @@ export function StepForm({ onAdd }: { onAdd: (step: Step) => void }) {
     setValue("");
     setText("");
     setName("");
+    setFilePath("");
   }
 
   return (
@@ -101,6 +140,35 @@ export function StepForm({ onAdd }: { onAdd: (step: Step) => void }) {
           placeholder="Texto esperado"
           value={text}
           onChange={(e) => setText(e.target.value)}
+        />
+      )}
+
+      {kind === "press" && (
+        <input
+          className={inputClass}
+          placeholder="Tecla, ex: Enter, Escape, ArrowDown"
+          value={key}
+          onChange={(e) => setKey(e.target.value)}
+        />
+      )}
+
+      {kind === "uploadFile" && (
+        <input
+          className={inputClass}
+          placeholder="Caminho do arquivo, ex: ./fixtures/foto.png"
+          value={filePath}
+          onChange={(e) => setFilePath(e.target.value)}
+        />
+      )}
+
+      {kind === "expectCount" && (
+        <input
+          type="number"
+          min={0}
+          className={inputClass}
+          placeholder="Quantidade esperada"
+          value={count}
+          onChange={(e) => setCount(Number(e.target.value) || 0)}
         />
       )}
 

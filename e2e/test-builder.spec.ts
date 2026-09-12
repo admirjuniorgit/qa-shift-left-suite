@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./fixtures";
 
 test.describe("construtor de testes", () => {
   test("monta um fluxo com alguns passos e gera o código Playwright correspondente", async ({ page }) => {
@@ -22,5 +22,9 @@ test.describe("construtor de testes", () => {
     const code = page.locator("pre code");
     await expect(code).toContainText('await page.goto("/login");');
     await expect(code).toContainText('await page.getByText("Entrar").click();');
+
+    // Duplicar o primeiro passo deve gerar um segundo "goto" idêntico na lista
+    await page.getByRole("button", { name: "Duplicar passo" }).first().click();
+    await expect(page.getByRole("listitem").filter({ hasText: 'Ir para "/login"' })).toHaveCount(2);
   });
 });

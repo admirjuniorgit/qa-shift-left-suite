@@ -23,16 +23,32 @@ código continua disponível no histórico do git.
       (Playwright) por feature, CI no GitHub Actions, deploy estático no
       Netlify
 
-## v2 — Ideias futuras
+## v2 — Enriquecimento (entregue)
 
-- [ ] Construtor de testes: mais ações (hover, pressionar tecla, esperar
-      por seletor/estado, `expect` de contagem de elementos)
-- [ ] Banco de perguntas de refinamento maior/customizável pelo usuário
-      (adicionar categorias e tags próprias)
+- [x] Construtor de testes: mais ações (`hover`, pressionar tecla, enviar
+      arquivo, esperar elemento aparecer, `expect` de contagem/habilitado/
+      desabilitado), duplicar passo e duplicar fluxo inteiro, reordenar por
+      arrastar, cada passo envolvido em `test.step()` no código gerado
+      (nomeia o passo no relatório do Playwright), baixar todos os fluxos
+      de uma vez
+- [x] Refinamento: exportar sessão inteira como Markdown (perguntas
+      respondidas, notas e status do DoR), adicionar perguntas próprias ao
+      banco pela UI, duplicar sessão, busca no histórico
+- [x] Boas práticas: importar checklist colando um Markdown pronto,
+      checklists sugeridos automaticamente no Refinamento com base nas
+      características da história (tags compartilhadas entre os dois
+      módulos)
+- [x] Tema claro/escuro/sistema (manual, persistido), tela de boas-vindas
+      na primeira visita, PWA instalável (manifest + service worker)
+- [x] Sincronização opcional entre dispositivos via Gist privado do GitHub
+      do próprio usuário (token guardado só no navegador, sem backend
+      nosso no meio)
+
+## v3 — Ideias futuras
+
+- [ ] Templates de DoR diferentes por tipo de história (bug/feature/spike)
+      em vez de um checklist único
 - [ ] Mais templates de checklist prontos (ex: acessibilidade, segurança)
-- [ ] Exportar uma sessão de refinamento inteira como Markdown (perguntas
-      respondidas + notas + status do DoR), não só os checklists de
-      qualidade
 - [ ] Modo "trazer sua própria chave de IA" (client-side, sem proxy/backend)
       para sugerir critérios de aceite ou casos de teste a partir de uma
       descrição de história — opcional, sem armazenar a chave em lugar

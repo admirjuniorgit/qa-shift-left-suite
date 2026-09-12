@@ -1,17 +1,12 @@
 import { Button } from "@/components/ui/Button";
 import { useToast } from "@/components/ui/toast-context";
+import { downloadTextFile } from "@/lib/download";
 
 export function CodePreview({ code, fileName }: { code: string; fileName: string }) {
   const notify = useToast();
 
   function handleDownload() {
-    const blob = new Blob([code], { type: "text/typescript" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = fileName;
-    link.click();
-    URL.revokeObjectURL(url);
+    downloadTextFile(fileName, code, "text/typescript");
   }
 
   return (

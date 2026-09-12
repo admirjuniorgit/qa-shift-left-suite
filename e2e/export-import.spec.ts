@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./fixtures";
 import path from "node:path";
 import os from "node:os";
 import fs from "node:fs/promises";
@@ -20,7 +20,7 @@ test.describe("backup e restauração", () => {
     await page.evaluate(() => localStorage.clear());
     await page.reload();
     await page.getByRole("tab", { name: "Construtor de testes" }).click();
-    await expect(page.getByRole("button", { name: /Fluxo para backup/ })).not.toBeVisible();
+    await expect(page.getByRole("button", { name: /^Fluxo para backup/ })).not.toBeVisible();
 
     const fileChooserPromise = page.waitForEvent("filechooser");
     await page.getByRole("button", { name: "Importar dados" }).click();
@@ -31,7 +31,7 @@ test.describe("backup e restauração", () => {
     await page.waitForTimeout(1200); // aguarda o reload automático pós-importação
 
     await page.getByRole("tab", { name: "Construtor de testes" }).click();
-    await expect(page.getByRole("button", { name: /Fluxo para backup/ })).toBeVisible();
+    await expect(page.getByRole("button", { name: /^Fluxo para backup/ })).toBeVisible();
 
     await fs.unlink(filePath).catch(() => {});
   });

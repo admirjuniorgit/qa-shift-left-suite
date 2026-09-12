@@ -24,6 +24,7 @@ export const BUILT_IN_TEMPLATES: ChecklistTemplate[] = [
     name: "Checklist de code review",
     category: "codeReview",
     isBuiltIn: true,
+    relatedTags: ["envolvePermissoes", "fluxoDePagamento"],
     items: [
       "O PR faz o que a descrição diz, sem escopo escondido",
       "Nomes de variáveis/funções comunicam a intenção",
@@ -52,6 +53,7 @@ export const BUILT_IN_TEMPLATES: ChecklistTemplate[] = [
     name: "Estratégia de teste",
     category: "testStrategy",
     isBuiltIn: true,
+    relatedTags: ["integracaoExterna", "performanceCritica", "fluxoDePagamento"],
     items: [
       "Riscos principais da entrega identificados e priorizados",
       "Nível de teste definido por risco (unitário, integração, e2e, manual)",
@@ -65,6 +67,7 @@ export const BUILT_IN_TEMPLATES: ChecklistTemplate[] = [
     name: "Checklist de release",
     category: "release",
     isBuiltIn: true,
+    relatedTags: ["mudancaDeContrato", "alteraDadosExistentes"],
     items: [
       "Changelog/notas de release atualizadas",
       "Migrações de dados testadas e reversíveis",

@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./fixtures";
 
 test.describe("refinamento", () => {
   test("cria uma sessão, filtra perguntas, marca DoR e persiste após reload", async ({ page }) => {
