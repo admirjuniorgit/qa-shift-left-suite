@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from "react";
+import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { inputClass, labelClass } from "@/components/ui/field-styles";
 import { createId } from "@/lib/id";
@@ -105,7 +106,7 @@ export function StepForm({ onAdd }: { onAdd: (step: Step) => void }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-2 rounded-md border border-dashed border-slate-300 p-3 dark:border-slate-700">
+    <form onSubmit={handleSubmit} className="space-y-2 rounded-lg border border-dashed border-slate-300 p-3 dark:border-white/10">
       <div>
         <label className={labelClass} htmlFor="step-kind">
           Tipo de passo
@@ -200,6 +201,7 @@ export function StepForm({ onAdd }: { onAdd: (step: Step) => void }) {
       )}
 
       <Button type="submit" size="sm">
+        <Plus className="size-3.5" />
         Adicionar passo
       </Button>
     </form>

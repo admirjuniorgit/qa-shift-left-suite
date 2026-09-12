@@ -1,3 +1,4 @@
+import { Copy, Download } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { useToast } from "@/components/ui/toast-context";
 import { downloadTextFile } from "@/lib/download";
@@ -22,14 +23,16 @@ export function CodePreview({ code, fileName }: { code: string; fileName: string
               notify("Código copiado.");
             }}
           >
+            <Copy className="size-3.5" />
             Copiar
           </Button>
           <Button size="sm" variant="secondary" onClick={handleDownload}>
+            <Download className="size-3.5" />
             Baixar .spec.ts
           </Button>
         </div>
       </div>
-      <pre className="max-h-96 overflow-auto rounded-md bg-slate-900 p-3 text-xs text-slate-100">
+      <pre className="max-h-96 overflow-auto rounded-lg bg-slate-900 p-3 text-xs text-slate-100">
         <code>{code}</code>
       </pre>
     </div>

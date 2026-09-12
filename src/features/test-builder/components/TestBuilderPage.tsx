@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Copy, Download, FlaskConical, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { cn } from "@/lib/cn";
@@ -124,7 +125,8 @@ export function TestBuilderPage() {
         <div className="mb-2 flex items-center justify-between">
           <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-200">Fluxos de teste</h3>
           <Button variant="ghost" size="sm" onClick={handleCreate}>
-            + novo
+            <Plus className="size-3.5" />
+            Novo
           </Button>
         </div>
         <ul className="space-y-1">
@@ -133,10 +135,10 @@ export function TestBuilderPage() {
               <button
                 onClick={() => setSelectedId(tc.id)}
                 className={cn(
-                  "min-w-0 flex-1 rounded-md px-3 py-2 text-left text-sm",
+                  "min-w-0 flex-1 rounded-lg px-3 py-2 text-left text-sm transition-colors",
                   tc.id === selectedId
-                    ? "bg-indigo-50 font-medium text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300"
-                    : "hover:bg-slate-100 dark:hover:bg-slate-800",
+                    ? "bg-violet-600/10 font-medium text-violet-700 dark:bg-violet-500/15 dark:text-violet-300"
+                    : "hover:bg-slate-100 dark:hover:bg-white/5",
                 )}
               >
                 <span className="block truncate">{tc.name}</span>
@@ -144,18 +146,24 @@ export function TestBuilderPage() {
               </button>
               <button
                 onClick={() => handleDuplicateTestCase(tc.id)}
-                className="shrink-0 text-xs text-slate-400 opacity-0 hover:text-indigo-500 group-hover:opacity-100"
+                className="flex shrink-0 items-center justify-center rounded-md p-1.5 text-slate-400 opacity-0 hover:bg-slate-100 hover:text-violet-600 group-hover:opacity-100 dark:hover:bg-white/5"
                 aria-label={`Duplicar ${tc.name}`}
                 title="Duplicar fluxo"
               >
-                duplicar
+                <Copy className="size-3.5" />
               </button>
             </li>
           ))}
-          {testCases.length === 0 && <p className="text-sm text-slate-400">Nenhum fluxo ainda.</p>}
+          {testCases.length === 0 && (
+            <li className="flex flex-col items-center gap-2 rounded-lg border border-dashed border-slate-200 py-8 text-center text-sm text-slate-400 dark:border-white/10">
+              <FlaskConical className="size-5" />
+              Nenhum fluxo ainda.
+            </li>
+          )}
         </ul>
         {testCases.length > 1 && (
           <Button variant="secondary" size="sm" className="mt-3 w-full" onClick={handleDownloadAll}>
+            <Download className="size-3.5" />
             Baixar todos (.spec.ts)
           </Button>
         )}
@@ -167,11 +175,12 @@ export function TestBuilderPage() {
             <div className="flex items-center justify-between gap-2">
               <input
                 aria-label="Nome do fluxo de teste"
-                className="w-full rounded-md border-none bg-transparent text-base font-semibold focus:outline-none"
+                className="w-full rounded-lg border-none bg-transparent text-base font-semibold focus:outline-none"
                 value={selected.name}
                 onChange={(e) => updateSelected((tc) => ({ ...tc, name: e.target.value }))}
               />
               <Button variant="ghost" size="sm" onClick={() => handleDelete(selected.id)}>
+                <Trash2 className="size-3.5" />
                 Excluir
               </Button>
             </div>
@@ -187,7 +196,10 @@ export function TestBuilderPage() {
             <CodePreview code={generatePlaywrightTest(selected)} fileName={`${slugify(selected.name)}.spec.ts`} />
           </>
         ) : (
-          <p className="text-sm text-slate-400">Crie um fluxo de teste para começar.</p>
+          <div className="flex flex-col items-center gap-2 py-12 text-center text-sm text-slate-400">
+            <FlaskConical className="size-6" />
+            Crie um fluxo de teste para começar.
+          </div>
         )}
       </Card>
     </div>

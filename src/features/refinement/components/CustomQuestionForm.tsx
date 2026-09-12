@@ -23,14 +23,14 @@ export function CustomQuestionForm({ onAdd }: { onAdd: (question: Omit<QuestionB
 
   if (!open) {
     return (
-      <button type="button" onClick={() => setOpen(true)} className="text-sm text-indigo-600 hover:underline dark:text-indigo-400">
+      <button type="button" onClick={() => setOpen(true)} className="text-sm text-violet-600 hover:underline dark:text-violet-400">
         + adicionar pergunta própria ao banco
       </button>
     );
   }
 
   return (
-    <div className="space-y-2 rounded-md border border-dashed border-slate-300 p-3 dark:border-slate-700">
+    <div className="space-y-2 rounded-lg border border-dashed border-slate-300 p-3 dark:border-white/10">
       <div>
         <label className={labelClass} htmlFor="custom-question-text">
           Pergunta
@@ -60,7 +60,7 @@ export function CustomQuestionForm({ onAdd }: { onAdd: (question: Omit<QuestionB
           {STORY_TAGS.map((tag) => (
             <label
               key={tag}
-              className="flex cursor-pointer items-center gap-1.5 rounded-full border border-slate-300 px-2.5 py-1 text-xs dark:border-slate-700 has-[:checked]:border-indigo-500 has-[:checked]:bg-indigo-50 dark:has-[:checked]:bg-indigo-950"
+              className="flex cursor-pointer items-center gap-1.5 rounded-full border border-slate-300 px-2.5 py-1 text-xs dark:border-white/10 has-[:checked]:border-violet-500 has-[:checked]:bg-violet-50 has-[:checked]:text-violet-700 dark:has-[:checked]:border-violet-500/50 dark:has-[:checked]:bg-violet-500/15 dark:has-[:checked]:text-violet-300"
             >
               <input type="checkbox" checked={tags.includes(tag)} onChange={() => toggleTag(tag)} className="sr-only" />
               {STORY_TAG_LABELS[tag]}

@@ -20,7 +20,7 @@ function defaultLocatorFor(kind: LocatorKind): Locator {
 
 export function LocatorPicker({ value, onChange }: { value: Locator; onChange: (locator: Locator) => void }) {
   return (
-    <div className="space-y-2 rounded-md border border-slate-200 p-2 dark:border-slate-800">
+    <div className="space-y-2 rounded-lg border border-slate-200 p-2 dark:border-white/10">
       <div>
         <label className={labelClass} htmlFor="locator-kind">
           Como localizar o elemento

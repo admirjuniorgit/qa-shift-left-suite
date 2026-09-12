@@ -16,6 +16,7 @@ test.describe("onboarding e tema", () => {
     await page.addInitScript(() => localStorage.setItem("qa-toolkit-onboarding-seen", "1"));
     await page.goto("/");
 
+    await page.getByRole("button", { name: "Configurações" }).click();
     await page.getByRole("button", { name: "Escuro", exact: true }).click();
     await expect(page.locator("html")).toHaveClass(/dark/);
 

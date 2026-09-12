@@ -31,17 +31,17 @@ export function ThemeToggle() {
   }
 
   return (
-    <div className="inline-flex rounded-md border border-slate-300 text-xs dark:border-slate-700">
+    <div className="inline-flex w-full rounded-lg bg-slate-100 p-0.5 text-xs dark:bg-white/5">
       {OPTIONS.map((opt) => (
         <button
           key={opt.value}
           type="button"
           onClick={() => handleSelect(opt.value)}
           className={cn(
-            "px-2.5 py-1 first:rounded-l-md last:rounded-r-md",
+            "flex-1 rounded-md px-2.5 py-1.5 font-medium transition-colors",
             pref === opt.value
-              ? "bg-indigo-600 text-white"
-              : "bg-white text-slate-600 hover:bg-slate-100 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800",
+              ? "bg-white text-violet-700 shadow-sm dark:bg-white/10 dark:text-violet-300"
+              : "text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200",
           )}
         >
           {opt.label}

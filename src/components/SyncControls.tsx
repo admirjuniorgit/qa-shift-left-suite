@@ -65,22 +65,22 @@ export function SyncControls() {
 
   if (!open) {
     return (
-      <button type="button" onClick={() => setOpen(true)} className="text-xs text-indigo-600 hover:underline dark:text-indigo-400">
+      <button type="button" onClick={() => setOpen(true)} className="text-xs font-medium text-violet-600 hover:underline dark:text-violet-400">
         Sincronizar entre dispositivos (via GitHub Gist)
       </button>
     );
   }
 
   return (
-    <div className="w-full max-w-xs space-y-2 rounded-md border border-slate-200 p-3 text-left dark:border-slate-800">
-      <p className="text-xs text-slate-500">
+    <div className="w-full space-y-2 text-left">
+      <p className="text-xs text-slate-500 dark:text-slate-400">
         Usa um Gist privado da sua conta do GitHub como "nuvem" pessoal — sem nenhum servidor nosso no meio. Crie um
         token em{" "}
         <a
           href="https://github.com/settings/tokens?type=beta"
           target="_blank"
           rel="noreferrer"
-          className="underline"
+          className="text-violet-600 underline dark:text-violet-400"
         >
           github.com/settings/tokens
         </a>{" "}

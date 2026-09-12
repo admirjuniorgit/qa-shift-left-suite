@@ -1,3 +1,4 @@
+import { Copy } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { useToast } from "@/components/ui/toast-context";
 
@@ -16,10 +17,11 @@ export function MarkdownExportPreview({ markdown }: { markdown: string }) {
             notify("Markdown copiado.");
           }}
         >
+          <Copy className="size-3.5" />
           Copiar
         </Button>
       </div>
-      <pre className="max-h-64 overflow-auto rounded-md bg-slate-900 p-3 text-xs text-slate-100">
+      <pre className="max-h-64 overflow-auto rounded-lg bg-slate-900 p-3 text-xs text-slate-100">
         <code>{markdown}</code>
       </pre>
     </div>
