@@ -44,6 +44,17 @@ código continua disponível no histórico do git.
       do próprio usuário (token guardado só no navegador, sem backend
       nosso no meio)
 
+## v2.1 — Redesign visual (entregue)
+
+- [x] Identidade visual "sleek dev tool" (Linear/Vercel/Raycast): fonte
+      Inter (self-hosted via `@fontsource-variable/inter`), acento violeta,
+      superfícies com bordas translúcidas no tema escuro
+- [x] Navegação em sidebar no desktop (com ícones via `lucide-react`),
+      abas em pílula no mobile
+- [x] Menu de configurações (tema + backup + sincronização) consolidado
+      num popover, no lugar de ocupar espaço fixo no cabeçalho
+- [x] Ícones em ações e estados vazios em toda a ferramenta
+
 ## v3 — Ideias futuras
 
 - [ ] Templates de DoR diferentes por tipo de história (bug/feature/spike)

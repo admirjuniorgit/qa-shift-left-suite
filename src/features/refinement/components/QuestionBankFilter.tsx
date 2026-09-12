@@ -33,7 +33,7 @@ export function QuestionBankFilter({
           {STORY_TAGS.map((tag) => (
             <label
               key={tag}
-              className="flex cursor-pointer items-center gap-1.5 rounded-full border border-slate-300 px-3 py-1 text-xs dark:border-slate-700 has-[:checked]:border-indigo-500 has-[:checked]:bg-indigo-50 dark:has-[:checked]:bg-indigo-950"
+              className="flex cursor-pointer items-center gap-1.5 rounded-full border border-slate-300 px-3 py-1 text-xs dark:border-white/10 has-[:checked]:border-violet-500 has-[:checked]:bg-violet-50 has-[:checked]:text-violet-700 dark:has-[:checked]:border-violet-500/50 dark:has-[:checked]:bg-violet-500/15 dark:has-[:checked]:text-violet-300"
             >
               <input type="checkbox" checked={storyTags.includes(tag)} onChange={() => onToggleTag(tag)} className="sr-only" />
               {STORY_TAG_LABELS[tag]}

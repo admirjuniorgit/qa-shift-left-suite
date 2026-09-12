@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { inputClass } from "@/components/ui/field-styles";
 import type { DoRChecklistItem } from "../types";
@@ -57,6 +58,7 @@ export function DoRChecklist({
           onChange={(e) => setNewLabel(e.target.value)}
         />
         <Button type="submit" variant="secondary" size="sm">
+          <Plus className="size-3.5" />
           Adicionar
         </Button>
       </form>

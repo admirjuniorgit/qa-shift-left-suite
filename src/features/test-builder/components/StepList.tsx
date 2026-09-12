@@ -40,8 +40,8 @@ export function StepList({
             setDragIndex(null);
             setOverIndex(null);
           }}
-          className={`flex items-center gap-2 rounded-md bg-slate-100 px-3 py-2 text-sm dark:bg-slate-800 ${
-            overIndex === index && dragIndex !== null && dragIndex !== index ? "outline outline-2 outline-indigo-500" : ""
+          className={`flex items-center gap-2 rounded-lg bg-slate-100 px-3 py-2 text-sm dark:bg-white/5 ${
+            overIndex === index && dragIndex !== null && dragIndex !== index ? "outline outline-2 outline-violet-500" : ""
           }`}
         >
           <span className="cursor-grab select-none text-slate-400" title="Arraste para reordenar">
@@ -70,7 +70,7 @@ export function StepList({
             >
               ↓
             </button>
-            <button type="button" onClick={() => onDuplicate(index)} className="text-slate-400 hover:text-indigo-500" aria-label="Duplicar passo">
+            <button type="button" onClick={() => onDuplicate(index)} className="text-slate-400 hover:text-violet-500" aria-label="Duplicar passo">
               duplicar
             </button>
             <button type="button" onClick={() => onRemove(index)} className="text-slate-400 hover:text-red-500" aria-label="Remover passo">

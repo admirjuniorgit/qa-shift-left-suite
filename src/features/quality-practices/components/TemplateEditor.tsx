@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Plus, RotateCcw, X } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { inputClass } from "@/components/ui/field-styles";
 import { createId } from "@/lib/id";
@@ -39,6 +40,7 @@ export function TemplateEditor({
         />
         {template.isBuiltIn && onResetToBuiltIn && (
           <Button variant="ghost" size="sm" onClick={onResetToBuiltIn}>
+            <RotateCcw className="size-3.5" />
             Restaurar original
           </Button>
         )}
@@ -51,10 +53,10 @@ export function TemplateEditor({
             <button
               type="button"
               onClick={() => removeItem(item.id)}
-              className="text-xs text-slate-400 hover:text-red-500"
+              className="flex shrink-0 items-center justify-center rounded-md p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-500/10"
               aria-label="Remover item"
             >
-              remover
+              <X className="size-3.5" />
             </button>
           </li>
         ))}
@@ -74,6 +76,7 @@ export function TemplateEditor({
           onChange={(e) => setNewItemText(e.target.value)}
         />
         <Button type="submit" variant="secondary" size="sm">
+          <Plus className="size-3.5" />
           Adicionar
         </Button>
       </form>

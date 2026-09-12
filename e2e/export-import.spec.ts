@@ -8,11 +8,12 @@ test.describe("backup e restauração", () => {
     await page.goto("/");
 
     await page.getByRole("tab", { name: "Construtor de testes" }).click();
-    await page.getByRole("button", { name: "+ novo" }).click();
+    await page.getByRole("button", { name: "Novo" }).click();
     await page.getByLabel("Nome do fluxo de teste").fill("Fluxo para backup");
 
+    await page.getByRole("button", { name: "Configurações" }).click();
     const downloadPromise = page.waitForEvent("download");
-    await page.getByRole("button", { name: "Exportar dados" }).click();
+    await page.getByRole("button", { name: "Exportar", exact: true }).click();
     const download = await downloadPromise;
     const filePath = path.join(os.tmpdir(), `qa-toolkit-backup-e2e-${Date.now()}.json`);
     await download.saveAs(filePath);
@@ -22,8 +23,9 @@ test.describe("backup e restauração", () => {
     await page.getByRole("tab", { name: "Construtor de testes" }).click();
     await expect(page.getByRole("button", { name: /^Fluxo para backup/ })).not.toBeVisible();
 
+    await page.getByRole("button", { name: "Configurações" }).click();
     const fileChooserPromise = page.waitForEvent("filechooser");
-    await page.getByRole("button", { name: "Importar dados" }).click();
+    await page.getByRole("button", { name: "Importar", exact: true }).click();
     const fileChooser = await fileChooserPromise;
     await fileChooser.setFiles(filePath);
 

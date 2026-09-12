@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { Download, Upload } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { useToast } from "@/components/ui/toast-context";
 import { downloadBackup, importBackup } from "@/lib/export-import";
@@ -25,20 +26,24 @@ export function BackupControls() {
   }
 
   return (
-    <div className="flex flex-col items-end gap-1">
+    <div className="space-y-2">
+      <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Dados</p>
       <div className="flex gap-2">
         <Button
           variant="secondary"
           size="sm"
+          className="flex-1"
           onClick={() => {
             downloadBackup();
             notify("Backup exportado.");
           }}
         >
-          Exportar dados
+          <Download className="size-3.5" />
+          Exportar
         </Button>
-        <Button variant="secondary" size="sm" onClick={() => fileInputRef.current?.click()}>
-          Importar dados
+        <Button variant="secondary" size="sm" className="flex-1" onClick={() => fileInputRef.current?.click()}>
+          <Upload className="size-3.5" />
+          Importar
         </Button>
         <input
           ref={fileInputRef}
@@ -52,10 +57,11 @@ export function BackupControls() {
           }}
         />
       </div>
-      <p className="max-w-xs text-right text-xs text-slate-400">
-        Os dados ficam só neste navegador. Exporte um backup de vez em quando — trocar de navegador ou limpar dados do
-        site apaga tudo.
+      <p className="text-xs text-slate-400">
+        Os dados ficam só neste navegador. Exporte de vez em quando — trocar de navegador ou limpar dados do site
+        apaga tudo.
       </p>
+      <div className="h-px bg-slate-200 dark:bg-white/10" />
       <SyncControls />
     </div>
   );

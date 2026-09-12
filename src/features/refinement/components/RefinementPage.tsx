@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Plus, Save, Sparkles } from "lucide-react";
 import { createId } from "@/lib/id";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
@@ -141,7 +142,8 @@ export function RefinementPage({ onOpenQualityTemplate }: { onOpenQualityTemplat
           <h2 className="text-base font-semibold">{editingId ? "Editando sessão" : "Nova sessão de refinamento"}</h2>
           {editingId && (
             <Button variant="ghost" size="sm" onClick={handleNew}>
-              + nova sessão
+              <Plus className="size-3.5" />
+              Nova sessão
             </Button>
           )}
         </div>
@@ -169,8 +171,11 @@ export function RefinementPage({ onOpenQualityTemplate }: { onOpenQualityTemplat
         />
 
         {suggestedTemplates.length > 0 && (
-          <div className="rounded-md border border-indigo-200 bg-indigo-50 p-3 text-sm dark:border-indigo-900 dark:bg-indigo-950">
-            <p className="mb-1 font-medium text-indigo-800 dark:text-indigo-300">Checklists de qualidade sugeridos</p>
+          <div className="rounded-lg border border-violet-200 bg-violet-50 p-3 text-sm dark:border-violet-500/20 dark:bg-violet-500/10">
+            <p className="mb-1 flex items-center gap-1.5 font-medium text-violet-800 dark:text-violet-300">
+              <Sparkles className="size-3.5" />
+              Checklists de qualidade sugeridos
+            </p>
             <ul className="space-y-1">
               {suggestedTemplates.map((t) => (
                 <li key={t.id} className="flex items-center justify-between gap-2">
@@ -200,7 +205,10 @@ export function RefinementPage({ onOpenQualityTemplate }: { onOpenQualityTemplat
 
         <DoRChecklist items={draft.dorChecklist} onToggle={toggleDorItem} onAdd={addDorItem} onRemove={removeDorItem} />
 
-        <Button onClick={handleSave}>{editingId ? "Salvar alterações" : "Salvar sessão"}</Button>
+        <Button onClick={handleSave}>
+          <Save className="size-3.5" />
+          {editingId ? "Salvar alterações" : "Salvar sessão"}
+        </Button>
       </Card>
 
       <div>

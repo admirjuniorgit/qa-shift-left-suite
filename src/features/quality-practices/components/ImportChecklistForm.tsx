@@ -16,14 +16,14 @@ export function ImportChecklistForm({ onImport }: { onImport: (parsed: { name: s
 
   if (!open) {
     return (
-      <button type="button" onClick={() => setOpen(true)} className="text-sm text-indigo-600 hover:underline dark:text-indigo-400">
+      <button type="button" onClick={() => setOpen(true)} className="text-sm text-violet-600 hover:underline dark:text-violet-400">
         + importar checklist de um Markdown
       </button>
     );
   }
 
   return (
-    <div className="space-y-2 rounded-md border border-dashed border-slate-300 p-3 dark:border-slate-700">
+    <div className="space-y-2 rounded-lg border border-dashed border-slate-300 p-3 dark:border-white/10">
       <p className="text-xs text-slate-500">
         Cole um Markdown com um título (<code># Nome</code>) e itens como <code>- [ ] item</code>.
       </p>

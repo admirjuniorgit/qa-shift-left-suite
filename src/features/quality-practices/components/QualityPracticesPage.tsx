@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Plus, ShieldCheck, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { useToast } from "@/components/ui/toast-context";
@@ -74,7 +75,8 @@ export function QualityPracticesPage({ initialSelectedId }: { initialSelectedId?
         <div className="mb-2 flex items-center justify-between">
           <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-200">Templates</h3>
           <Button variant="ghost" size="sm" onClick={handleCreateCustom}>
-            + novo
+            <Plus className="size-3.5" />
+            Novo
           </Button>
         </div>
         <TemplateList templates={templates} selectedId={selectedId} onSelect={setSelectedId} />
@@ -93,13 +95,17 @@ export function QualityPracticesPage({ initialSelectedId }: { initialSelectedId?
             />
             {!selected.isBuiltIn && (
               <Button variant="ghost" size="sm" onClick={() => handleDeleteCustom(selected.id)}>
+                <Trash2 className="size-3.5" />
                 Excluir este checklist
               </Button>
             )}
             <MarkdownExportPreview markdown={templateToMarkdown(selected)} />
           </>
         ) : (
-          <p className="text-sm text-slate-400">Selecione ou crie um checklist.</p>
+          <div className="flex flex-col items-center gap-2 py-12 text-center text-sm text-slate-400">
+            <ShieldCheck className="size-6" />
+            Selecione ou crie um checklist.
+          </div>
         )}
       </Card>
     </div>

@@ -21,8 +21,10 @@ export function ToastProvider({ children }: { children: ReactNode }) {
           <div
             key={t.id}
             className={cn(
-              "rounded-md px-4 py-2 text-sm text-white shadow-lg",
-              t.tone === "success" ? "bg-slate-900 dark:bg-slate-100 dark:text-slate-900" : "bg-red-600",
+              "rounded-lg border px-4 py-2 text-sm shadow-lg backdrop-blur-sm",
+              t.tone === "success"
+                ? "border-white/10 bg-slate-900/95 text-slate-100 dark:border-white/10 dark:bg-slate-100/95 dark:text-slate-900"
+                : "border-red-500/20 bg-red-600 text-white",
             )}
           >
             {t.message}

@@ -5,7 +5,7 @@ test.describe("construtor de testes", () => {
     await page.goto("/");
     await page.getByRole("tab", { name: "Construtor de testes" }).click();
 
-    await page.getByRole("button", { name: "+ novo" }).click();
+    await page.getByRole("button", { name: "Novo" }).click();
 
     // Passo 1: goto
     await page.getByPlaceholder("URL, ex: /login").fill("/login");
