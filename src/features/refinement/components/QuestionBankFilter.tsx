@@ -1,5 +1,6 @@
 import { CATEGORY_LABELS, STORY_TAGS, STORY_TAG_LABELS, type QuestionBankEntry, type StoryTag } from "../types";
 import { filterQuestions } from "../question-bank";
+import { CustomQuestionForm } from "./CustomQuestionForm";
 
 export function QuestionBankFilter({
   questions,
@@ -7,12 +8,14 @@ export function QuestionBankFilter({
   onToggleTag,
   selectedQuestionIds,
   onToggleQuestion,
+  onAddCustomQuestion,
 }: {
   questions: QuestionBankEntry[];
   storyTags: StoryTag[];
   onToggleTag: (tag: StoryTag) => void;
   selectedQuestionIds: string[];
   onToggleQuestion: (id: string) => void;
+  onAddCustomQuestion: (question: Omit<QuestionBankEntry, "id">) => void;
 }) {
   const visible = filterQuestions(questions, storyTags);
   const byCategory = new Map<string, QuestionBankEntry[]>();
@@ -64,6 +67,8 @@ export function QuestionBankFilter({
         ))}
         {visible.length === 0 && <p className="text-sm text-slate-400">Nenhuma pergunta para os filtros atuais.</p>}
       </div>
+
+      <CustomQuestionForm onAdd={onAddCustomQuestion} />
     </div>
   );
 }

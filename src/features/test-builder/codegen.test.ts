@@ -97,6 +97,61 @@ describe("generatePlaywrightTest", () => {
     expect(code).toContain('await page.screenshot({ path: "checkout.png" });');
   });
 
+  it("gera hover", () => {
+    const code = generatePlaywrightTest(
+      makeTestCase([{ id: "1", kind: "hover", locator: { kind: "text", text: "Menu" } }]),
+    );
+    expect(code).toContain('await page.getByText("Menu").hover();');
+  });
+
+  it("gera press", () => {
+    const code = generatePlaywrightTest(
+      makeTestCase([{ id: "1", kind: "press", locator: { kind: "label", label: "Busca" }, key: "Enter" }]),
+    );
+    expect(code).toContain('await page.getByLabel("Busca").press("Enter");');
+  });
+
+  it("gera uploadFile", () => {
+    const code = generatePlaywrightTest(
+      makeTestCase([{ id: "1", kind: "uploadFile", locator: { kind: "testId", testId: "file-input" }, filePath: "./fixtures/foto.png" }]),
+    );
+    expect(code).toContain('await page.getByTestId("file-input").setInputFiles("./fixtures/foto.png");');
+  });
+
+  it("gera waitFor", () => {
+    const code = generatePlaywrightTest(
+      makeTestCase([{ id: "1", kind: "waitFor", locator: { kind: "css", selector: ".spinner" } }]),
+    );
+    expect(code).toContain('await page.locator(".spinner").waitFor();');
+  });
+
+  it("gera expectCount", () => {
+    const code = generatePlaywrightTest(
+      makeTestCase([{ id: "1", kind: "expectCount", locator: { kind: "css", selector: "li" }, count: 3 }]),
+    );
+    expect(code).toContain('await expect(page.locator("li")).toHaveCount(3);');
+  });
+
+  it("gera expectEnabled e expectDisabled", () => {
+    const code = generatePlaywrightTest(
+      makeTestCase([
+        { id: "1", kind: "expectEnabled", locator: { kind: "role", role: "button", name: "Salvar" } },
+        { id: "2", kind: "expectDisabled", locator: { kind: "role", role: "button", name: "Salvar" } },
+      ]),
+    );
+    expect(code).toContain('await expect(page.getByRole("button", { name: "Salvar" })).toBeEnabled();');
+    expect(code).toContain('await expect(page.getByRole("button", { name: "Salvar" })).toBeDisabled();');
+  });
+
+  it("envolve cada passo em test.step com um rótulo legível", () => {
+    const code = generatePlaywrightTest(
+      makeTestCase([{ id: "1", kind: "goto", url: "/login" }]),
+    );
+    expect(code).toContain('await test.step("Ir para \\"/login\\"", async () => {');
+    expect(code).toContain('await page.goto("/login");');
+    expect(code).toContain("});");
+  });
+
   it("escapa aspas e quebras de linha nos valores do usuário com segurança", () => {
     const code = generatePlaywrightTest(
       makeTestCase([

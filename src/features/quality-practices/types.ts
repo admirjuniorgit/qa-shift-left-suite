@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { STORY_TAGS } from "@/features/refinement/types";
 
 export const TEMPLATE_CATEGORIES = ["dod", "codeReview", "bugReport", "testStrategy", "release", "custom"] as const;
 
@@ -26,6 +27,7 @@ export const checklistTemplateSchema = z.object({
   category: z.enum(TEMPLATE_CATEGORIES),
   items: z.array(checklistItemSchema),
   isBuiltIn: z.boolean(),
+  relatedTags: z.array(z.enum(STORY_TAGS)).optional(),
 });
 
 export type ChecklistTemplate = z.infer<typeof checklistTemplateSchema>;

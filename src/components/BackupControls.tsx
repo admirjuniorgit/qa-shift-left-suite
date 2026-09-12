@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { Button } from "@/components/ui/Button";
 import { useToast } from "@/components/ui/toast-context";
 import { downloadBackup, importBackup } from "@/lib/export-import";
+import { SyncControls } from "@/components/SyncControls";
 
 export function BackupControls() {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -55,6 +56,7 @@ export function BackupControls() {
         Os dados ficam só neste navegador. Exporte um backup de vez em quando — trocar de navegador ou limpar dados do
         site apaga tudo.
       </p>
+      <SyncControls />
     </div>
   );
 }

@@ -8,13 +8,22 @@ login) para o dia a dia de quem trabalha com qualidade de software:
 
 - **Refinamento**: banco de perguntas para levantar durante o refinamento de
   tarefas, filtrável pelas características da história, com checklist de
-  Definition of Ready e histórico de sessões.
+  Definition of Ready, histórico de sessões (com busca e duplicação),
+  export da sessão inteira em Markdown e checklists de qualidade sugeridos
+  automaticamente conforme as tags da história.
 - **Boas práticas de qualidade**: biblioteca de checklists editáveis
   (Definition of Done, code review, relato de bug, estratégia de teste,
-  release), exportáveis como Markdown para colar no board/wiki do time.
+  release), exportáveis como Markdown ou importáveis colando um Markdown
+  pronto.
 - **Construtor de testes sem código**: monte um fluxo em passos simples
-  (clicar em X, preencher Y, verificar texto Z) e gere o código Playwright
-  correspondente, pronto para colar no repositório de testes do seu time.
+  (clicar, preencher, passar o mouse, pressionar tecla, esperar elemento
+  aparecer, verificar visibilidade/texto/quantidade...) e gere o código
+  Playwright correspondente — com `test.step()` por passo, duplicar/
+  reordenar por arrastar e baixar todos os fluxos de uma vez.
+
+Também tem tema claro/escuro/sistema, funciona como PWA instalável, e um
+sincronizador opcional entre dispositivos via Gist privado da sua própria
+conta do GitHub (sem nenhum servidor nosso no meio).
 
 > Projeto pessoal, open source, construído como portfólio de engenharia de
 > qualidade.
