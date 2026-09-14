@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react";
-import { ClipboardList, FlaskConical, Gauge, ShieldCheck } from "lucide-react";
+import { ClipboardList, FlaskConical, Gauge, Home, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 
 const KEY = "qa-toolkit-onboarding-seen";
 
 const FEATURES = [
+  {
+    icon: Home,
+    title: "Início",
+    text: "já te leva pra ação certa — atalhos diretos e sessões com Definition of Ready pendente prontas pra continuar.",
+  },
   {
     icon: ClipboardList,
     title: "Refinamento",

@@ -11,6 +11,7 @@ export function QuestionBankFilter({
   selectedQuestionIds,
   onToggleQuestion,
   onAddCustomQuestion,
+  initialPhase = "refinamento",
 }: {
   questions: QuestionBankEntry[];
   storyTags: StoryTag[];
@@ -18,8 +19,9 @@ export function QuestionBankFilter({
   selectedQuestionIds: string[];
   onToggleQuestion: (id: string) => void;
   onAddCustomQuestion: (question: Omit<QuestionBankEntry, "id">) => void;
+  initialPhase?: QuestionPhase;
 }) {
-  const [phase, setPhase] = useState<QuestionPhase>("refinamento");
+  const [phase, setPhase] = useState<QuestionPhase>(initialPhase);
   const visible = filterQuestions(questions, storyTags, phase);
   const byCategory = new Map<string, QuestionBankEntry[]>();
   for (const q of visible) {

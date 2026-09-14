@@ -6,6 +6,10 @@
 Ferramenta pessoal e **100% estática** (sem backend, sem banco de dados, sem
 login) para o dia a dia de quem trabalha com qualidade de software:
 
+- **Início**: dashboard que já direciona a próxima ação — atalhos diretos
+  pras features abaixo, sessões de refinamento com Definition of Ready
+  pendente prontas pra continuar de onde parou, e uma métrica de qualidade
+  em destaque por dia.
 - **Refinamento**: banco de perguntas prontas para levantar durante o
   refinamento e o planning de tarefas (capacidade, riscos, sequenciamento,
   alinhamento do time...), filtrável por fase e pelas características da
@@ -75,7 +79,7 @@ variável de ambiente — tudo roda no navegador.
 npm run lint        # ESLint
 npm run typecheck   # TypeScript
 npm run test        # Vitest (unitários)
-npm run test:e2e    # Playwright (fluxos das 4 features + backup/restauração)
+npm run test:e2e    # Playwright (fluxos das 5 features + backup/restauração)
 ```
 
 ## Deploy

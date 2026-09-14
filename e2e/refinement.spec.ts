@@ -3,6 +3,7 @@ import { test, expect } from "./fixtures";
 test.describe("refinamento", () => {
   test("cria uma sessão, filtra perguntas, marca DoR e persiste após reload", async ({ page }) => {
     await page.goto("/");
+    await page.getByRole("tab", { name: "Refinamento" }).click();
 
     await page.getByPlaceholder("Ex: PROJ-123 — Permitir exportar relatório em PDF").fill("Minha história de teste");
 
@@ -20,11 +21,13 @@ test.describe("refinamento", () => {
     await expect(page.getByText("1/6 prontos")).toBeVisible();
 
     await page.reload();
+    await page.getByRole("tab", { name: "Refinamento" }).click();
     await expect(page.getByText("Minha história de teste")).toBeVisible();
   });
 
   test("aba Planning mostra perguntas de planning em vez das de refinamento", async ({ page }) => {
     await page.goto("/");
+    await page.getByRole("tab", { name: "Refinamento" }).click();
 
     const refinementQuestion = "O que explicitamente NÃO faz parte desta entrega?";
     const planningQuestion = "Qual é o maior risco técnico dessa tarefa, e existe um plano B se ele se concretizar?";

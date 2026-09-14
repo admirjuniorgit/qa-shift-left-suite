@@ -10,14 +10,44 @@ import { RefinementPage } from "@/features/refinement/components/RefinementPage"
 import { QualityPracticesPage } from "@/features/quality-practices/components/QualityPracticesPage";
 import { MetricsGuidePage } from "@/features/metrics/components/MetricsGuidePage";
 import { TestBuilderPage } from "@/features/test-builder/components/TestBuilderPage";
+import { HomePage, type HomeAction } from "@/features/home/components/HomePage";
+import type { QuestionPhase } from "@/features/refinement/types";
 
 function AppContent() {
   const [activeTab, setActiveTab] = useState<string>(NAV_ITEMS[0].id);
   const [qualityJumpTarget, setQualityJumpTarget] = useState<string | undefined>(undefined);
+  const [refinementJump, setRefinementJump] = useState<{ sessionId?: string; phase?: QuestionPhase }>({});
 
   function handleOpenQualityTemplate(templateId: string) {
     setQualityJumpTarget(templateId);
     setActiveTab("quality");
+  }
+
+  function handleContinueSession(sessionId: string) {
+    setRefinementJump({ sessionId });
+    setActiveTab("refinement");
+  }
+
+  function handleQuickAction(action: HomeAction) {
+    switch (action) {
+      case "refinement":
+        setRefinementJump({});
+        setActiveTab("refinement");
+        break;
+      case "planning":
+        setRefinementJump({ phase: "planning" });
+        setActiveTab("refinement");
+        break;
+      case "quality":
+        setActiveTab("quality");
+        break;
+      case "metrics":
+        setActiveTab("metrics");
+        break;
+      case "test-builder":
+        setActiveTab("test-builder");
+        break;
+    }
   }
 
   const activeItem = NAV_ITEMS.find((item) => item.id === activeTab) ?? NAV_ITEMS[0];
@@ -45,7 +75,14 @@ function AppContent() {
         <OnboardingModal />
 
         <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-6 md:px-8">
-          {activeTab === "refinement" && <RefinementPage onOpenQualityTemplate={handleOpenQualityTemplate} />}
+          {activeTab === "home" && <HomePage onQuickAction={handleQuickAction} onContinueSession={handleContinueSession} />}
+          {activeTab === "refinement" && (
+            <RefinementPage
+              onOpenQualityTemplate={handleOpenQualityTemplate}
+              initialSessionId={refinementJump.sessionId}
+              initialPhase={refinementJump.phase}
+            />
+          )}
           {activeTab === "quality" && <QualityPracticesPage initialSelectedId={qualityJumpTarget} />}
           {activeTab === "metrics" && <MetricsGuidePage />}
           {activeTab === "test-builder" && <TestBuilderPage />}
