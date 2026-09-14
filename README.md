@@ -6,15 +6,25 @@
 Ferramenta pessoal e **100% estática** (sem backend, sem banco de dados, sem
 login) para o dia a dia de quem trabalha com qualidade de software:
 
-- **Refinamento**: banco de perguntas para levantar durante o refinamento de
-  tarefas, filtrável pelas características da história, com checklist de
-  Definition of Ready, histórico de sessões (com busca e duplicação),
-  export da sessão inteira em Markdown e checklists de qualidade sugeridos
-  automaticamente conforme as tags da história.
+- **Início**: dashboard que já direciona a próxima ação — atalhos diretos
+  pras features abaixo, sessões de refinamento com Definition of Ready
+  pendente prontas pra continuar de onde parou, e uma métrica de qualidade
+  em destaque por dia.
+- **Refinamento**: banco de perguntas prontas para levantar durante o
+  refinamento e o planning de tarefas (capacidade, riscos, sequenciamento,
+  alinhamento do time...), filtrável por fase e pelas características da
+  história, com checklist de Definition of Ready, histórico de sessões (com
+  busca e duplicação), export da sessão inteira em Markdown e checklists de
+  qualidade sugeridos automaticamente conforme as tags da história.
 - **Boas práticas de qualidade**: biblioteca de checklists editáveis
   (Definition of Done, code review, relato de bug, estratégia de teste,
   release), exportáveis como Markdown ou importáveis colando um Markdown
   pronto.
+- **Métricas de qualidade**: guia curado de métricas pra levar ao time
+  (pass rate, defect escape rate, MTTR, lead time, change failure rate...),
+  filtrável por categoria, com o que cada uma mede, como medir, uma dica
+  prática e um cuidado pra não virar métrica de vaidade — exportável como
+  Markdown.
 - **Construtor de testes sem código**: monte um fluxo em passos simples
   (clicar, preencher, passar o mouse, pressionar tecla, esperar elemento
   aparecer, verificar visibilidade/texto/quantidade...) e gere o código
@@ -69,7 +79,7 @@ variável de ambiente — tudo roda no navegador.
 npm run lint        # ESLint
 npm run typecheck   # TypeScript
 npm run test        # Vitest (unitários)
-npm run test:e2e    # Playwright (fluxos das 3 features + backup/restauração)
+npm run test:e2e    # Playwright (fluxos das 5 features + backup/restauração)
 ```
 
 ## Deploy

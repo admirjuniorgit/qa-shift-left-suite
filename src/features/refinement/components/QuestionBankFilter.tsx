@@ -1,4 +1,6 @@
-import { CATEGORY_LABELS, STORY_TAGS, STORY_TAG_LABELS, type QuestionBankEntry, type StoryTag } from "../types";
+import { useState } from "react";
+import { Tabs } from "@/components/ui/Tabs";
+import { CATEGORY_LABELS, PHASE_LABELS, QUESTION_PHASES, STORY_TAGS, STORY_TAG_LABELS, type QuestionBankEntry, type QuestionPhase, type StoryTag } from "../types";
 import { filterQuestions } from "../question-bank";
 import { CustomQuestionForm } from "./CustomQuestionForm";
 
@@ -9,6 +11,7 @@ export function QuestionBankFilter({
   selectedQuestionIds,
   onToggleQuestion,
   onAddCustomQuestion,
+  initialPhase = "refinamento",
 }: {
   questions: QuestionBankEntry[];
   storyTags: StoryTag[];
@@ -16,8 +19,10 @@ export function QuestionBankFilter({
   selectedQuestionIds: string[];
   onToggleQuestion: (id: string) => void;
   onAddCustomQuestion: (question: Omit<QuestionBankEntry, "id">) => void;
+  initialPhase?: QuestionPhase;
 }) {
-  const visible = filterQuestions(questions, storyTags);
+  const [phase, setPhase] = useState<QuestionPhase>(initialPhase);
+  const visible = filterQuestions(questions, storyTags, phase);
   const byCategory = new Map<string, QuestionBankEntry[]>();
   for (const q of visible) {
     byCategory.set(q.category, [...(byCategory.get(q.category) ?? []), q]);
@@ -25,6 +30,12 @@ export function QuestionBankFilter({
 
   return (
     <div className="space-y-4">
+      <Tabs
+        items={QUESTION_PHASES.map((p) => ({ id: p, label: PHASE_LABELS[p] }))}
+        activeId={phase}
+        onChange={(id) => setPhase(id as QuestionPhase)}
+      />
+
       <div>
         <p className="mb-2 text-sm font-medium text-slate-700 dark:text-slate-300">
           Características da história (filtra as perguntas relevantes)
@@ -68,7 +79,7 @@ export function QuestionBankFilter({
         {visible.length === 0 && <p className="text-sm text-slate-400">Nenhuma pergunta para os filtros atuais.</p>}
       </div>
 
-      <CustomQuestionForm onAdd={onAddCustomQuestion} />
+      <CustomQuestionForm key={phase} defaultPhase={phase} onAdd={onAddCustomQuestion} />
     </div>
   );
 }

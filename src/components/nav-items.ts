@@ -1,4 +1,4 @@
-import { ClipboardList, FlaskConical, ShieldCheck } from "lucide-react";
+import { ClipboardList, FlaskConical, Gauge, Home, ShieldCheck } from "lucide-react";
 
 export interface NavItem {
   id: string;
@@ -7,7 +7,9 @@ export interface NavItem {
 }
 
 export const NAV_ITEMS: NavItem[] = [
+  { id: "home", label: "Início", icon: Home },
   { id: "refinement", label: "Refinamento", icon: ClipboardList },
   { id: "quality", label: "Boas práticas", icon: ShieldCheck },
+  { id: "metrics", label: "Métricas", icon: Gauge },
   { id: "test-builder", label: "Construtor de testes", icon: FlaskConical },
 ];

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Plus, ShieldCheck, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { MarkdownExportPreview } from "@/components/ui/MarkdownExportPreview";
 import { useToast } from "@/components/ui/toast-context";
 import { createId } from "@/lib/id";
 import { BUILT_IN_TEMPLATES } from "../templates-seed";
@@ -10,7 +11,6 @@ import { templateToMarkdown } from "../markdown";
 import type { ChecklistTemplate } from "../types";
 import { TemplateList } from "./TemplateList";
 import { TemplateEditor } from "./TemplateEditor";
-import { MarkdownExportPreview } from "./MarkdownExportPreview";
 import { ImportChecklistForm } from "./ImportChecklistForm";
 
 export function QualityPracticesPage({ initialSelectedId }: { initialSelectedId?: string } = {}) {

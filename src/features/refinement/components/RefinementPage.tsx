@@ -7,7 +7,7 @@ import { inputClass, labelClass } from "@/components/ui/field-styles";
 import { useToast } from "@/components/ui/toast-context";
 import { BUILT_IN_QUESTIONS } from "../question-bank";
 import { loadCustomQuestions, loadSessions, saveCustomQuestions, saveSessions } from "../storage";
-import { DEFAULT_DOR_CHECKLIST_LABELS, type DoRChecklistItem, type QuestionBankEntry, type RefinementSession, type StoryTag } from "../types";
+import { DEFAULT_DOR_CHECKLIST_LABELS, type DoRChecklistItem, type QuestionBankEntry, type QuestionPhase, type RefinementSession, type StoryTag } from "../types";
 import { loadTemplates as loadQualityTemplates } from "@/features/quality-practices/storage";
 import type { ChecklistTemplate } from "@/features/quality-practices/types";
 import { QuestionBankFilter } from "./QuestionBankFilter";
@@ -24,7 +24,15 @@ function emptyDraft(): Omit<RefinementSession, "id" | "createdAt"> {
   };
 }
 
-export function RefinementPage({ onOpenQualityTemplate }: { onOpenQualityTemplate: (templateId: string) => void }) {
+export function RefinementPage({
+  onOpenQualityTemplate,
+  initialSessionId,
+  initialPhase,
+}: {
+  onOpenQualityTemplate: (templateId: string) => void;
+  initialSessionId?: string;
+  initialPhase?: QuestionPhase;
+}) {
   const [sessions, setSessions] = useState<RefinementSession[]>([]);
   const [customQuestions, setCustomQuestions] = useState<QuestionBankEntry[]>([]);
   const [qualityTemplates, setQualityTemplates] = useState<ChecklistTemplate[]>([]);
@@ -35,9 +43,23 @@ export function RefinementPage({ onOpenQualityTemplate }: { onOpenQualityTemplat
   const suggestedTemplates = qualityTemplates.filter((t) => t.relatedTags?.some((tag) => draft.storyTags.includes(tag)));
 
   useEffect(() => {
-    setSessions(loadSessions());
+    const loadedSessions = loadSessions();
+    setSessions(loadedSessions);
     setCustomQuestions(loadCustomQuestions());
     setQualityTemplates(loadQualityTemplates());
+
+    const target = initialSessionId ? loadedSessions.find((s) => s.id === initialSessionId) : undefined;
+    if (target) {
+      setEditingId(target.id);
+      setDraft({
+        storyTitle: target.storyTitle,
+        storyTags: target.storyTags,
+        selectedQuestionIds: target.selectedQuestionIds,
+        notes: target.notes,
+        dorChecklist: target.dorChecklist,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function handleAddCustomQuestion(question: Omit<QuestionBankEntry, "id">) {
@@ -168,6 +190,7 @@ export function RefinementPage({ onOpenQualityTemplate }: { onOpenQualityTemplat
           selectedQuestionIds={draft.selectedQuestionIds}
           onToggleQuestion={toggleQuestion}
           onAddCustomQuestion={handleAddCustomQuestion}
+          initialPhase={initialPhase}
         />
 
         {suggestedTemplates.length > 0 && (

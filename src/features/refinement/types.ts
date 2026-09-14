@@ -8,6 +8,10 @@ export const QUESTION_CATEGORIES = [
   "seguranca",
   "dependencias",
   "testabilidade",
+  "capacidade",
+  "sequenciamento",
+  "riscos",
+  "alinhamento",
 ] as const;
 
 export type QuestionCategory = (typeof QUESTION_CATEGORIES)[number];
@@ -20,6 +24,19 @@ export const CATEGORY_LABELS: Record<QuestionCategory, string> = {
   seguranca: "Segurança",
   dependencias: "Dependências",
   testabilidade: "Testabilidade",
+  capacidade: "Capacidade e estimativa",
+  sequenciamento: "Sequenciamento e paralelização",
+  riscos: "Riscos",
+  alinhamento: "Alinhamento do time",
+};
+
+export const QUESTION_PHASES = ["refinamento", "planning"] as const;
+
+export type QuestionPhase = (typeof QUESTION_PHASES)[number];
+
+export const PHASE_LABELS: Record<QuestionPhase, string> = {
+  refinamento: "Refinamento",
+  planning: "Planning",
 };
 
 export const STORY_TAGS = [
@@ -50,6 +67,7 @@ export const questionBankEntrySchema = z.object({
   category: z.enum(QUESTION_CATEGORIES),
   tags: z.array(z.enum(STORY_TAGS)),
   isCustom: z.boolean().optional(),
+  phase: z.enum(QUESTION_PHASES).optional(),
 });
 
 export type QuestionBankEntry = z.infer<typeof questionBankEntrySchema>;
