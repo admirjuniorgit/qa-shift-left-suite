@@ -1,12 +1,19 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { inputClass, labelClass } from "@/components/ui/field-styles";
-import { CATEGORY_LABELS, QUESTION_CATEGORIES, STORY_TAGS, STORY_TAG_LABELS, type QuestionBankEntry, type QuestionCategory, type StoryTag } from "../types";
+import { CATEGORY_LABELS, PHASE_LABELS, QUESTION_CATEGORIES, QUESTION_PHASES, STORY_TAGS, STORY_TAG_LABELS, type QuestionBankEntry, type QuestionCategory, type QuestionPhase, type StoryTag } from "../types";
 
-export function CustomQuestionForm({ onAdd }: { onAdd: (question: Omit<QuestionBankEntry, "id">) => void }) {
+export function CustomQuestionForm({
+  defaultPhase = "refinamento",
+  onAdd,
+}: {
+  defaultPhase?: QuestionPhase;
+  onAdd: (question: Omit<QuestionBankEntry, "id">) => void;
+}) {
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
   const [category, setCategory] = useState<QuestionCategory>("escopo");
+  const [phase, setPhase] = useState<QuestionPhase>(defaultPhase);
   const [tags, setTags] = useState<StoryTag[]>([]);
 
   function toggleTag(tag: StoryTag) {
@@ -15,7 +22,7 @@ export function CustomQuestionForm({ onAdd }: { onAdd: (question: Omit<QuestionB
 
   function handleSubmit() {
     if (!text.trim()) return;
-    onAdd({ text: text.trim(), category, tags, isCustom: true });
+    onAdd({ text: text.trim(), category, phase, tags, isCustom: true });
     setText("");
     setTags([]);
     setOpen(false);
@@ -37,22 +44,41 @@ export function CustomQuestionForm({ onAdd }: { onAdd: (question: Omit<QuestionB
         </label>
         <input id="custom-question-text" className={inputClass} value={text} onChange={(e) => setText(e.target.value)} />
       </div>
-      <div>
-        <label className={labelClass} htmlFor="custom-question-category">
-          Categoria
-        </label>
-        <select
-          id="custom-question-category"
-          className={inputClass}
-          value={category}
-          onChange={(e) => setCategory(e.target.value as QuestionCategory)}
-        >
-          {QUESTION_CATEGORIES.map((c) => (
-            <option key={c} value={c}>
-              {CATEGORY_LABELS[c]}
-            </option>
-          ))}
-        </select>
+      <div className="grid grid-cols-2 gap-2">
+        <div>
+          <label className={labelClass} htmlFor="custom-question-phase">
+            Fase
+          </label>
+          <select
+            id="custom-question-phase"
+            className={inputClass}
+            value={phase}
+            onChange={(e) => setPhase(e.target.value as QuestionPhase)}
+          >
+            {QUESTION_PHASES.map((p) => (
+              <option key={p} value={p}>
+                {PHASE_LABELS[p]}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label className={labelClass} htmlFor="custom-question-category">
+            Categoria
+          </label>
+          <select
+            id="custom-question-category"
+            className={inputClass}
+            value={category}
+            onChange={(e) => setCategory(e.target.value as QuestionCategory)}
+          >
+            {QUESTION_CATEGORIES.map((c) => (
+              <option key={c} value={c}>
+                {CATEGORY_LABELS[c]}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
       <div>
         <p className={labelClass}>Só mostrar quando a história tiver (opcional):</p>

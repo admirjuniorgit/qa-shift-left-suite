@@ -1,13 +1,18 @@
 import { useEffect, useState } from "react";
-import { ClipboardList, FlaskConical, ShieldCheck } from "lucide-react";
+import { ClipboardList, FlaskConical, Gauge, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 
 const KEY = "qa-toolkit-onboarding-seen";
 
 const FEATURES = [
-  { icon: ClipboardList, title: "Refinamento", text: "sugere perguntas pra levantar numa história e acompanha o Definition of Ready." },
+  {
+    icon: ClipboardList,
+    title: "Refinamento",
+    text: "perguntas prontas pra levantar durante refinamento e planning, e acompanha o Definition of Ready.",
+  },
   { icon: ShieldCheck, title: "Boas práticas", text: "checklists de qualidade (DoD, code review, release...) editáveis e exportáveis." },
+  { icon: Gauge, title: "Métricas", text: "guia de métricas de qualidade pra levar ao time — o que medir, como medir e cuidados pra não virar vaidade." },
   { icon: FlaskConical, title: "Construtor de testes", text: "monta passos visualmente e gera código Playwright pronto." },
 ];
 
@@ -30,7 +35,7 @@ export function OnboardingModal() {
       <Card className="max-w-md space-y-5">
         <h2 className="text-lg font-semibold tracking-tight">Bem-vindo ao QA Toolkit</h2>
         <p className="text-sm text-slate-600 dark:text-slate-400">
-          Uma ferramenta pessoal e estática — sem servidor, sem login. Três coisas pra ajudar no seu dia a dia:
+          Uma ferramenta pessoal e estática — sem servidor, sem login. Algumas coisas pra ajudar no seu dia a dia:
         </p>
         <ul className="space-y-3">
           {FEATURES.map((f) => (

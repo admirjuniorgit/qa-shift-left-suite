@@ -8,6 +8,7 @@ import { SettingsMenu } from "@/components/SettingsMenu";
 import { OnboardingModal } from "@/components/OnboardingModal";
 import { RefinementPage } from "@/features/refinement/components/RefinementPage";
 import { QualityPracticesPage } from "@/features/quality-practices/components/QualityPracticesPage";
+import { MetricsGuidePage } from "@/features/metrics/components/MetricsGuidePage";
 import { TestBuilderPage } from "@/features/test-builder/components/TestBuilderPage";
 
 function AppContent() {
@@ -46,6 +47,7 @@ function AppContent() {
         <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-6 md:px-8">
           {activeTab === "refinement" && <RefinementPage onOpenQualityTemplate={handleOpenQualityTemplate} />}
           {activeTab === "quality" && <QualityPracticesPage initialSelectedId={qualityJumpTarget} />}
+          {activeTab === "metrics" && <MetricsGuidePage />}
           {activeTab === "test-builder" && <TestBuilderPage />}
         </main>
       </div>

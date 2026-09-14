@@ -22,4 +22,19 @@ test.describe("refinamento", () => {
     await page.reload();
     await expect(page.getByText("Minha história de teste")).toBeVisible();
   });
+
+  test("aba Planning mostra perguntas de planning em vez das de refinamento", async ({ page }) => {
+    await page.goto("/");
+
+    const refinementQuestion = "O que explicitamente NÃO faz parte desta entrega?";
+    const planningQuestion = "Qual é o maior risco técnico dessa tarefa, e existe um plano B se ele se concretizar?";
+
+    await expect(page.getByText(refinementQuestion)).toBeVisible();
+    await expect(page.getByText(planningQuestion)).not.toBeVisible();
+
+    await page.getByRole("tab", { name: "Planning" }).click();
+
+    await expect(page.getByText(planningQuestion)).toBeVisible();
+    await expect(page.getByText(refinementQuestion)).not.toBeVisible();
+  });
 });
