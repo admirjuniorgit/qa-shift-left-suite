@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ArrowRight, ClipboardList, FlaskConical, Gauge, Lightbulb, ShieldCheck, Sparkles } from "lucide-react";
+import { ArrowRight, ClipboardList, FlaskConical, Gauge, Lightbulb, ListTodo, ShieldCheck, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { loadSessions } from "@/features/refinement/storage";
@@ -18,6 +18,12 @@ function tipOfTheDay() {
 }
 
 const QUICK_ACTIONS = [
+  {
+    icon: ListTodo,
+    title: "Minhas tarefas",
+    text: "Anote e acompanhe o que você precisa executar.",
+    action: "tasks" as const,
+  },
   {
     icon: ClipboardList,
     title: "Nova sessão de refinamento",

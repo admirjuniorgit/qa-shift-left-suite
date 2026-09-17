@@ -11,6 +11,7 @@ import { QualityPracticesPage } from "@/features/quality-practices/components/Qu
 import { MetricsGuidePage } from "@/features/metrics/components/MetricsGuidePage";
 import { TestBuilderPage } from "@/features/test-builder/components/TestBuilderPage";
 import { HomePage, type HomeAction } from "@/features/home/components/HomePage";
+import { TasksPage } from "@/features/tasks/components/TasksPage";
 import type { QuestionPhase } from "@/features/refinement/types";
 
 function AppContent() {
@@ -30,6 +31,9 @@ function AppContent() {
 
   function handleQuickAction(action: HomeAction) {
     switch (action) {
+      case "tasks":
+        setActiveTab("tasks");
+        break;
       case "refinement":
         setRefinementJump({});
         setActiveTab("refinement");
@@ -76,6 +80,7 @@ function AppContent() {
 
         <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-6 md:px-8">
           {activeTab === "home" && <HomePage onQuickAction={handleQuickAction} onContinueSession={handleContinueSession} />}
+          {activeTab === "tasks" && <TasksPage />}
           {activeTab === "refinement" && (
             <RefinementPage
               onOpenQualityTemplate={handleOpenQualityTemplate}

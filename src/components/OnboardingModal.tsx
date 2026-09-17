@@ -55,8 +55,8 @@ export function OnboardingModal() {
           ))}
         </ul>
         <p className="text-xs text-slate-500">
-          Os dados ficam só neste navegador. Use o menu de configurações (ícone de engrenagem) pra exportar um backup
-          de vez em quando.
+          Os dados ficam só neste navegador (exceto Tarefas, que sincroniza direto no Supabase). Use o menu de
+          configurações (ícone de engrenagem) pra exportar um backup de vez em quando.
         </p>
         <Button onClick={dismiss}>Entendi</Button>
       </Card>

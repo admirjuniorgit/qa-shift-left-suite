@@ -2,19 +2,20 @@
 
 ## Visão geral
 
-SPA estática (Vite + React + TypeScript), sem backend. Tudo roda no
+SPA estática (Vite + React + TypeScript), sem backend próprio. Tudo roda no
 navegador do usuário:
 
 ```
 Navegador
-  ├── React (UI: 3 abas — Refinamento, Boas práticas, Construtor de testes)
+  ├── React (UI: abas — Início, Tarefas, Refinamento, Boas práticas, Métricas, Construtor de testes)
   ├── localStorage (persistência, namespaced sob "qa-toolkit:v1:*")
+  ├── Supabase REST/PostgREST (só a aba Tarefas — ver "Tarefas e Supabase" abaixo)
   └── módulo de codegen (Step[] -> arquivo .spec.ts do Playwright, string pura)
 ```
 
-Não há chamadas de rede, API, autenticação ou serviço externo em tempo de
-execução. O build (`vite build`) gera arquivos estáticos publicados
-diretamente no Netlify (`netlify.toml` define `command`/`publish`).
+Exceto a aba Tarefas, não há chamadas de rede, API, autenticação ou serviço
+externo em tempo de execução. O build (`vite build`) gera arquivos estáticos
+publicados diretamente no Netlify (`netlify.toml` define `command`/`publish`).
 
 ## Módulos (`src/features/*`)
 
@@ -65,7 +66,7 @@ sincronização entre eles. A mitigação é o próprio export/import manual
 - **Netlify**: build estático (`npm run build` → `dist/`), sem runtime de
   servidor.
 
-## Por que não há mais Next.js/Supabase
+## Por que não há mais Next.js/Supabase (como backend da aplicação)
 
 A versão anterior deste projeto (MVP1) era uma suíte de test management
 multi-tenant com Next.js + Supabase (Postgres/Auth/Storage com RLS,
@@ -74,3 +75,19 @@ Ela foi descontinuada e substituída por esta ferramenta estática porque o
 uso real do autor é pessoal e diário, e não justifica manter um
 backend/banco de dados no ar. Nada do código do MVP1 foi reaproveitado —
 o histórico do git preserva essa implementação anterior para referência.
+
+## Tarefas e Supabase
+
+A aba **Tarefas** (`src/features/tasks/`) é a única exceção: guarda uma
+lista pessoal de tarefas ("como se fossem anotações") no mesmo projeto
+Supabase do MVP1 (Postgres, tabela `tasks` — SQL em
+`supabase/migrations/0001_tasks.sql`), porque essa lista precisa
+sincronizar entre navegadores/dispositivos, o que `localStorage` não
+resolve. Não há SDK do Supabase instalado — `src/lib/supabase.ts` é um
+wrapper fino sobre `fetch` direto na API REST/PostgREST
+(`${url}/rest/v1/tasks`) com a chave anon, no mesmo estilo do
+`src/lib/gist-sync.ts` (sync de backup via API do GitHub). Configuração via
+`VITE_SUPABASE_URL`/`VITE_SUPABASE_ANON_KEY` (`.env.local` em dev,
+variáveis de ambiente no Netlify em produção — ver `.env.example`); sem
+essas variáveis, a aba mostra uma mensagem explicando o que falta em vez de
+quebrar.
